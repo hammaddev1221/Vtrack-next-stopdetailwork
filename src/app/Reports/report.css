@@ -1,0 +1,230 @@
+.MuiPickersDatePickerRoot-toolbar {
+  align-items: flex-start !important;
+  flex-direction: column !important;
+  background-color: #00b56c !important;
+}
+
+.MuiPickersDay-daySelected {
+  color: #fff !important;
+  font-weight: 500 !important;
+  background-color: #00b56c !important;
+}
+
+.MuiOutlinedInput-notchedOutline {
+  border-color: #d3d3d3 !important;
+  outline: #00b56c;
+}
+
+.MuiOutlinedInput-notchedOutline:hover {
+  /* border-width: 1px !important; */
+  border: #00b56c !important;
+}
+
+.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: #00b56c !important;
+}
+
+.MuiFormHelperText-root.Mui-error {
+  color: #2f2b2b;
+  display: none;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  background-color: rgb(227, 224, 224);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #29303b;
+  border-radius: 7px;
+}
+.MuiInput-underline:after {
+  right: 0;
+  bottom: 0;
+  content: "";
+  position: absolute;
+  transform: scaleX(0);
+  transition: transform 200ms cubic-bezier(0, 0, 0.2, 1) 0ms;
+  border-bottom: 1px solid #8a8c94 !important;
+  pointer-events: none;
+}
+
+#report_select_hover {
+  font-weight: 600;
+  width: 100%;
+  display: flex;
+  justify-content: start;
+  margin-left: 3%;
+  padding: 2% 1%;
+}
+#report_select_hover:hover {
+  background-color: #00b56c;
+  color: white;
+  font-weight: 600;
+  width: 100%;
+  padding-top: 2%;
+  padding-bottom: 2%;
+}
+
+.height_report_form {
+  height: 7vh;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
+    rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+  margin-bottom: 1%;
+}
+.height_table {
+  /* style={{
+    maxWidth: "100%",
+    overflowX: "auto",
+    height: "75vh",
+    marginTop: "-0.5%",
+  }} */
+  width: 100%;
+  overflow-y: auto;
+  height: 71.5vh;
+  margin-top: -0.5%;
+}
+.report_pagination {
+  height: 7vh;
+  width: 100%;
+}
+@media (max-width: 1740px) and (min-width: 1400px) {
+  .height_report_form {
+    height: auto;
+  }
+  .report_periods {
+    grid-column: span 1;
+    display: flex;
+    align-items: center;
+  }
+  .report_periods_today {
+    grid-column: span 1;
+    display: flex;
+    align-items: center;
+  }
+  .submit_report_btn {
+    grid-column: span 1;
+    display: flex;
+    align-items: center;
+  }
+}
+@media (max-width: 1800px) and (min-width: 1570px) {
+  .height_report_form {
+    height: auto;
+  }
+  .roport_vehicle {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+  .report_periods_today {
+    grid-column: span 1;
+    display: flex;
+    align-items: center;
+  }
+  .report_periods {
+    grid-column: span 2;
+    display: flex;
+    align-items: center;
+  }
+  #submit_btn {
+    grid-column: span 11;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+  }
+  .submit_report_btn {
+    grid-column: span 1;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+  }
+}
+
+@media (max-width: 1571px) and (min-width: 1195px) {
+  .height_report_form {
+    height: auto;
+  }
+  .roport_vehicle {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+  .report_periods_today {
+    grid-column: span 1;
+    display: flex;
+    align-items: center;
+  }
+
+  .report_periods {
+    grid-column: span 2;
+    display: flex;
+    align-items: center;
+  }
+  #submit_btn {
+    grid-column: span 10;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+  }
+  .submit_report_btn {
+    grid-column: span 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+@media (min-width: 1050px) and (max-width: 1200px) {
+  .height_report_form {
+    height: auto;
+  }
+  .roport_vehicle {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+  .report_periods_today {
+    grid-column: span 2;
+    display: flex;
+    align-items: center;
+  }
+
+  .report_periods {
+    grid-column: span 2;
+    display: flex;
+    align-items: center;
+  }
+  .submit_report_btn {
+    grid-column: span 2;
+    display: flex;
+    align-items: center;
+  }
+}
+@media (max-width: 1049px) and (min-width: 610px) {
+  .height_report_form {
+    height: auto;
+  }
+}
+@media (max-width: 600px) {
+  .height_report_form {
+    height: auto;
+  }
+  .height_table {
+    height: auto;
+  }
+}
+/* .MuiButtonBase-root {
+  display: block !important;
+  text-align: center !important;
+}
+
+.css-78c6dr-MuiToolbar-root-MuiTablePagination-toolbar
+  .MuiTablePagination-actions {
+  -ms-flex-negative: 0 !important;
+  display: flex !important;
+}
+.css-8nphli .MuiTablePagination-actions {
+  flex-shrink: 0 !important;
+  margin-left: 20px !important;
+  display: contents !important;
+} */
+ul.MuiMenu-list {
+  display: flex !important;
+  flex-direction: column !important;
+  width: 100%;
+}

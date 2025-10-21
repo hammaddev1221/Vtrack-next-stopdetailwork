@@ -1,0 +1,77 @@
+/* .dateTimeForm {
+    width: 800px;
+    margin: auto;
+    padding: 8px;
+   margin-left: 17px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  .formGroup {
+    margin-bottom: 15px;
+   
+  }
+  label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  input[type='date'],
+  input[type='time'] {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+  }
+ 
+
+  .disabled {
+    cursor: not-allowed;
+  }
+
+
+
+
+  .video-container {
+    display: flex;
+    flex-direction: column-reverse; 
+     height: 60vh; 
+  }
+  
+
+  .video-controls-container {
+    background-color: rgba(0, 0, 0, 0.5); 
+    padding: 10px;
+    display: flex;
+    justify-content: center; 
+  }
+  
+  .video-element {
+    flex-grow: 1;
+    object-fit: cover; 
+  }
+ 
+
+
+.video-element::-webkit-media-controls-download-button,
+.video-element::-webkit-media-controls-picture-in-picture-button,
+.video-element::-webkit-media-controls-playback-rate-menu-button {
+  display: none;
+}
+.video-element::-webkit-media-controls-volume-slider,
+.video-element::-webkit-media-controls-mute-button {
+  display: none;
+}
+
+.video-element::-webkit-media-controls-overflow-menu-button {
+  display: none;
+}
+
+
+.MuiPickersToolbar-toolbar{
+  background-color: #00b56c !important;
+}
+.MuiPickersDay-daySelected{
+  background-color: #00b56c !important;
+}
+
+
+ */

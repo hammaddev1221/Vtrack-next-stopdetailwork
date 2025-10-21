@@ -1,0 +1,22 @@
+export type VehicleData = {
+  clientId: string;
+  vehicleId: string;
+  serviceTitle: string;
+  reminderDay: number;
+  reminderMilage: number;
+  expiryDay: number;
+  expiryMilage: number;
+  lastMilage: number;
+  lastDate: string;
+  expiryDate: string;
+  dataType: { type: string, enum: ["Service", "Maintenance", "Documentation"], default: "Service" };
+  maintenanceType: { type: string, enum: ["Preventative", "Corrective"], default: "Preventative" };
+  file: string;
+  filename: string;
+  documentType: string;
+  issueDate: string;
+  sms: { type: boolean, default: false };
+  email: { type: boolean, default: false };
+  pushnotification: { type: boolean, default: false };
+  status: { type: string, enum: ["pending", "due soon", "due", "complete", "renew"], default: "pending" };
+};

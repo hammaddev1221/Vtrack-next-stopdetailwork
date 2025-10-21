@@ -1,0 +1,27 @@
+.disabled {
+  cursor: not-allowed;
+  opacity: 0.5; /* Adjust the opacity as needed */
+}
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: #29303b !important;
+  border-radius: 7px;
+}
+#border_bottom {
+  border-bottom: 1px solid #00b56c !important;
+}
+#border_all {
+  border-bottom: 1px solid #00b56c !important;
+  border-right: 1px solid #00b56c !important;
+}
+
+@media (max-width: 600px) {
+  #custom_width {
+    width: 13rem;
+  }
+  #custom_width_notification_permission {
+    width: 20rem;
+  }
+}

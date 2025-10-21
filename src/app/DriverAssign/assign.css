@@ -1,0 +1,116 @@
+.MuiOutlinedInput-notchedOutline {
+  /* border-width: 1px !important; */
+  border-color: #d3d3d3 !important;
+  outline: #00b56c;
+}
+
+.MuiOutlinedInput-notchedOutline:hover {
+  /* border-width: 1px !important; */
+  border: #00b56c !important;
+}
+
+.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: #00b56c !important;
+}
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #29303b;
+  border-radius: 7px;
+}
+#table_head {
+  font-size: 18px;
+}
+
+.popup_style {
+  width: 40%;
+}
+.main_driver {
+  height: 93vh;
+  /* background-color: rgb(21, 17, 17); */
+}
+
+.drivers_text {
+  height: 4vh;
+  border-top: 2px solid white !important;
+}
+
+.drivers_add_popup {
+  height: 6vh;
+}
+.table_driver_profile {
+  height: 77vh;
+  /* overflow-y: scroll; */
+}
+.table_pagination {
+  height: 6vh;
+}
+
+@media (max-width: 1000px) and (min-width: 750px) {
+  .main_driver {
+    height: 85vh;
+    /* background-color: rgb(21, 17, 17); */
+  }
+  .drivers_text {
+    height: 4vh;
+    border-top: 2px solid white !important;
+  }
+  .drivers_add_popup {
+    height: 6vh;
+  }
+  .table_driver_profile {
+    height: 67vh;
+    /* overflow-y: scroll; */
+  }
+  .table_pagination {
+    height: 7vh;
+  }
+}
+
+@media (max-width: 750px) {
+  .main_driver {
+    height: auto;
+    /* background-color: rgb(21, 17, 17); */
+  }
+  .drivers_text {
+    height: auto;
+    border-top: 2px solid white !important;
+  }
+  .drivers_add_popup {
+    height: auto;
+  }
+  .table_driver_profile {
+    height: 50vh;
+    /* overflow-y: scroll; */
+  }
+  .table_pagination {
+    height: 7vh;
+  }
+  #table_head {
+    font-size: 16px;
+  }
+}
+@media (max-width: 1200px) and (min-width: 810px) {
+  .popup_style {
+    width: 65%;
+  }
+}
+.assign_driver_hover:hover {
+  background-color: #00b56c !important;
+  color: white !important;
+}
+
+@media (max-width: 800px) and (min-width: 510px) {
+  .popup_style {
+    width: 80%;
+  }
+}
+
+@media (max-width: 500px) {
+  .popup_style {
+    width: 90%;
+    margin-top: 30%;
+  }
+}

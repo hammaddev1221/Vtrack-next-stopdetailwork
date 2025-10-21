@@ -1,0 +1,345 @@
+.css-hyum1k-MuiToolbar-root {
+  position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-left: 16px;
+  padding-right: 16px;
+  min-height: 56px;
+  background-color: #00b56c !important;
+  height: 2vh;
+}
+
+.user_avator_image {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+}
+
+.css-s73ghq-MuiModal-root-MuiDrawer-root .MuiDrawer-paper {
+  overflow: hidden !important;
+}
+.css-1tgyln {
+  background-color: #00b56c !important;
+}
+.css-1qt3mm4 {
+  background-color: #00b56c !important;
+}
+/* .css-i6s8o {
+} */
+#nav_height {
+  height: 7vh !important;
+}
+.header_client_name {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+}
+.header_client_name_end {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+}
+/* @media only screen and (max-width: 1282px) and (min-width: 1060px) and (max-height: 900px) {
+  #nav_height {
+    height: 9.5vh !important;
+  }
+} */
+@media only screen and (max-width: 1460px) and (min-width: 850px) and (max-height: 1400px) and (min-height: 850px) {
+  #nav_height {
+    height: 5.5vh !important;
+  }
+  .logo_header {
+    width: 30rem;
+    grid-column: span 2 / span 3;
+    margin: 0% !important;
+    display: flex;
+    align-items: center;
+  }
+  .client_name {
+    grid-column: span 6 / span 6;
+  }
+  .logout_popup {
+    grid-column: span 2 / span 2;
+  }
+  .time_header {
+    grid-column: span 2 / span 2;
+  }
+}
+@media (max-width: 1485px) and (min-width: 1009px) {
+  #nav_height {
+    height: auto !important;
+  }
+}
+@media only screen and (max-width: 1760px) and (min-width: 1009px) and (max-height: 900px) {
+  #nav_height {
+    height: auto !important;
+  }
+  .logo_header {
+    width: 30rem;
+    grid-column: span 2 / span 3;
+    margin: 0% !important;
+    display: flex;
+    align-items: center;
+  }
+  .client_name {
+    grid-column: span 6 / span 6;
+  }
+  .logout_popup {
+    grid-column: span 2 / span 2;
+  }
+  .time_header {
+    grid-column: span 2 / span 2;
+  }
+}
+.css-bcapat .MuiDrawer-paper {
+  width: 58px;
+  box-sizing: border-box;
+  /* display: none; */
+  overflow: hidden !important;
+}
+
+/* @media (max-width: 1028px) and (min-height: 600px) {
+  #nav_height {
+    height: 12vh;
+  }
+} */
+.user_avator_image {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+}
+
+@media (max-width: 1022px) and (min-width: 767px) {
+  /* .hidden_top_popup {
+    display: none !important;
+  } */
+  .header_client_name {
+    display: none;
+  }
+  .logo_none {
+    display: none;
+  }
+  #nav_height {
+    height: 1px !important;
+    background-color: white !important;
+  }
+}
+
+@media (max-width: 768px) and (min-width: 568px) {
+  .logo_none {
+    display: none !important;
+  }
+  .client_name_popup {
+    display: none;
+  }
+  .logo_top_header {
+    grid-column: 11 span;
+    display: flex;
+    justify-content: center;
+  }
+  .header_client_name {
+    display: ruby;
+  }
+  .sm\:mt-14 {
+    margin-top: 0rem !important;
+  }
+  #nav_height {
+    height: 14vh !important;
+    display: flex;
+    justify-content: center !important;
+    align-items: center !important;
+    background-color: #00b56c !important;
+    padding-top: 9%;
+  }
+  .popup_mob_screen {
+    display: none !important;
+  }
+}
+
+/* @media (max-width: 818px) and (min-width: 608px) {
+  #nav_height {
+    height: 1px !important;
+  }
+} */
+
+@media (max-width: 606px) and (min-width: 505px) {
+  .search_live_tracking {
+    margin-top: 6%;
+  }
+}
+@media (max-width: 669px) and (min-width: 400px) {
+  #nav_height {
+    height: 16vh !important;
+    display: flex;
+    padding-top: 12% !important;
+    /* flex-direction: column; */
+    justify-content: center !important;
+    align-items: center !important;
+  }
+
+  .logo_top_header {
+    grid-column: 10 span;
+  }
+  .basis-20 {
+    flex-basis: 0rem;
+  }
+  .user_icon_top_header {
+    grid-column: 2 span;
+  }
+  .client_name_popup {
+    display: none !important;
+  }
+  #logo_hidden {
+    display: none !important;
+  }
+  .logo_none {
+    display: none !important;
+  }
+  .time_none {
+    display: none;
+  }
+  .popup_mob_screen {
+    display: none;
+  }
+  .time_header {
+    text-align: center;
+  }
+  .header_client_name {
+    display: block;
+  }
+  .sidebar-hide {
+    display: none;
+  }
+}
+
+@media (max-width: 401px) and (min-width: 320px) {
+  #nav_height {
+    height: 17vh !important;
+    display: flex;
+    text-align: center;
+  }
+  .logo_top_header {
+    grid-column: 10 span;
+  }
+  .logo_none {
+    display: none !important;
+  }
+  .time_none {
+    display: none;
+  }
+  #logo_hidden {
+    display: none !important;
+  }
+  .time_none {
+    display: none;
+  }
+  .client_name_popup {
+    display: none !important;
+  }
+  .popup_mob_screen {
+    display: none;
+  }
+  .time_header {
+    text-align: center;
+  }
+  .header_client_name {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    flex-direction: column;
+  }
+  .sidebar-hide {
+    display: none;
+  }
+  .user_icon_top_header {
+    grid-column: 2 span;
+  }
+}
+@media (max-width: 321px) {
+  #nav_height {
+    height: 17vh !important;
+    display: flex;
+    text-align: center;
+  }
+  .logo_top_header {
+    grid-column: 10 span;
+  }
+  .logo_none {
+    display: none !important;
+  }
+  .time_none {
+    display: none;
+  }
+  #logo_hidden {
+    display: none !important;
+  }
+  .time_none {
+    display: none;
+  }
+  .client_name_popup {
+    display: none !important;
+  }
+  .popup_mob_screen {
+    display: none;
+  }
+  .time_header {
+    text-align: center;
+  }
+  .header_client_name {
+    display: ruby;
+  }
+  .sidebar-hide {
+    display: none;
+  }
+  .user_icon_top_header {
+    grid-column: 2 span;
+  }
+}
+
+@media (max-width: 321px) and (max-height: 570px) {
+  #nav_height {
+    height: 27vh !important;
+    display: flex;
+    text-align: center;
+  }
+  .logo_top_header {
+    grid-column: 10 span;
+  }
+  .logo_none {
+    display: none !important;
+  }
+  .time_none {
+    display: none;
+  }
+  #logo_hidden {
+    display: none !important;
+  }
+  .time_none {
+    display: none;
+  }
+  .client_name_popup {
+    display: none !important;
+  }
+  .popup_mob_screen {
+    display: none;
+  }
+  .time_header {
+    text-align: center;
+  }
+  .header_client_name {
+    display: ruby;
+  }
+  .sidebar-hide {
+    display: none;
+  }
+  .user_icon_top_header {
+    grid-column: 2 span;
+  }
+}

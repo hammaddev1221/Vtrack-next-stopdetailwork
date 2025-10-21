@@ -1,0 +1,41 @@
+.leaflet-touch .leaflet-bar a {
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  color: #00b56c;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  background-color: rgb(227, 224, 224);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #29303b;
+  border-radius: 7px;
+}
+input[type="checkbox"]:hover {
+  outline: 1px auto #00b56c;
+  cursor: pointer;
+}
+
+#scroll_side_bar {
+  height: calc(91vh - 100px); /* Dynamic height calculation */
+  overflow-y: auto; /* Add a vertical scrollbar if content exceeds the container height */
+  border: 1px solid #ccc; /* Optional: Add a border for visual clarity */
+  padding: 10px;
+}
+#maps {
+  height: calc(100vh - 75px); /* Dynamic height calculation */
+  /* overflow-y: auto; Add a vertical scrollbar if content exceeds the container height */
+  /* border: 1px solid #ccc; /Optional: Add a border for visual clarity */
+  padding: 10px;
+}
+@media (max-width: 450px) {
+  #scroll_side_bar {
+    height: 20vh;
+  }
+  #maps {
+    height: 50vh;
+  }
+}

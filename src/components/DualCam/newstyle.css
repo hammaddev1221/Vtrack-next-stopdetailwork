@@ -1,0 +1,162 @@
+/* .dateTimeForm {
+  margin: auto;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+.formGroup {
+  margin-bottom: 15px;
+}
+label {
+  display: block;
+  margin-bottom: 5px;
+}
+input[type="date"],
+input[type="time"] {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+.disabled {
+  cursor: not-allowed;
+}
+
+.video-container {
+  display: flex;
+  flex-direction: column-reverse;
+  height: 60vh;
+}
+
+.video-controls-container {
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+}
+
+.video-element {
+  flex-grow: 1;
+  object-fit: cover;
+}
+
+.video-element::-webkit-media-controls-download-button,
+.video-element::-webkit-media-controls-picture-in-picture-button,
+.video-element::-webkit-media-controls-playback-rate-menu-button {
+  display: none;
+}
+.video-element::-webkit-media-controls-volume-slider,
+.video-element::-webkit-media-controls-mute-button {
+  display: none;
+}
+
+.video-element::-webkit-media-controls-overflow-menu-button {
+  display: none;
+}
+
+.MuiPickersToolbar-toolbar {
+  background-color: #00b56c !important;
+}
+.MuiPickersDay-daySelected {
+  background-color: #00b56c !important;
+} */
+
+.css-levciy-MuiTablePagination-displayedRows {
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  font-weight: 400;
+  font-size: 0.875rem;
+  line-height: 1.43;
+  letter-spacing: 0.01071em;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+  display: none;
+}
+.css-yuzg60-MuiButtonBase-root-MuiPaginationItem-root.Mui-selected {
+  background-color: #00b56c !important;
+  color: white !important;
+}
+
+.css-78c6dr-MuiToolbar-root-MuiTablePagination-toolbar
+  .MuiTablePagination-actions {
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+  margin-left: 20px;
+  display: none;
+}
+.delete_zone_button {
+  margin-left: 20%;
+  margin-top: -18%;
+}
+::-webkit-scrollbar {
+  width: 0px;
+}
+/* 0 */
+
+.camera_loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 40vh;
+  margin-left: -4%;
+}
+
+/* ::-webkit-scrollbar-thumb {
+  background: #29303b;
+  border-radius: 7px;
+} */
+#zone_hover {
+  font-weight: 600;
+}
+#zone_hover:hover {
+  background-color: #00b56c !important;
+  color: white;
+  font-weight: 600;
+}
+.MuiOutlinedInput-notchedOutline {
+  border-color: #d3d3d3 !important;
+  outline: #00b56c !important;
+}
+
+.MuiOutlinedInput-notchedOutline:hover {
+  border: #00b56c !important;
+}
+
+.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: #00b56c !important;
+}
+
+
+.flip-container {
+  perspective: 1000px; /* Give a 3D perspective */
+}
+
+.flip-container h3 {
+  transition: transform 0.6s;
+  backface-visibility: hidden; /* Hide the back face */
+}
+
+.flipped h3 {
+  transform: rotateX(180deg); /* Rotate on flip */
+}
+
+/* Optionally, you can style the back face if desired */
+.flip-container h3::after {
+  content: attr(data-value); /* Value to show on back */
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  transform: rotateX(180deg); /* Show the back face */
+  background-color: #4C51BF; /* Indigo color */
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Cormorant', serif;
+  font-weight: 600;
+  font-size: 24px;
+}

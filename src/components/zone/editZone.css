@@ -1,0 +1,145 @@
+::-webkit-scrollbar {
+  width: 10px !important;
+  background-color: rgb(227, 224, 224) !important;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #29303b !important;
+  border-radius: 7px !important;
+}
+.MuiOutlinedInput-notchedOutline {
+  /* border-width: 1px !important; */
+  border-color: #d3d3d3 !important;
+  outline: #00b56c;
+}
+.hover_select:hover {
+  background-color: #00b56c !important;
+  color: white !important;
+}
+.MuiOutlinedInput-notchedOutline:hover {
+  /* border-width: 1px !important; */
+  border: #00b56c !important;
+}
+.hover_add_zone:hover {
+  background-color: #00b56c;
+  color: white;
+}
+
+.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: #00b56c !important;
+}
+.edit_zone_main {
+  height: 93vh;
+}
+.edit_zone_text {
+  height: 4vh;
+}
+/* .edit_zone_map {
+  height: 88vh;
+} */
+.edit-zone_map_child {
+  height: 85vh;
+}
+.edit_zone_map_text {
+  height: 8vh;
+}
+.edit_zone_map_btn {
+  height: 3.5vh;
+}
+.edit_zone_map_main {
+  height: 70.5vh;
+}
+
+@media (max-width: 1900px) and (min-width: 1570px) {
+  .edit_zone_side_bar {
+    grid-column: 2 span;
+    width: 60%;
+  }
+  .edit-zone_map_child {
+    grid-column: 4 span;
+    margin-left: -14%;
+  }
+}
+
+@media (max-width: 1571px) and (min-width: 1195px) {
+  .edit_zone_side_bar {
+    grid-column: 2 span;
+    width: 60%;
+  }
+  .edit-zone_map_child {
+    grid-column: 4 span;
+    margin-left: -14%;
+  }
+}
+@media (max-width: 1200px) and (min-width: 1001px) {
+  /* .redraw_btn {
+    margin-top: -4%;
+  } */
+}
+@media (max-width: 1200px) and (min-width: 1001px) and (max-height: 650px) {
+  .edit_zone_map_main {
+    height: 50vh;
+  }
+  .edit_zone_text {
+    height: 6vh;
+  }
+  .redraw_btn {
+    margin-top: 4%;
+  }
+}
+@media (max-width: 1000px) and (min-width: 750px) {
+  .edit_zone_main {
+    height: 87vh;
+  }
+
+  .edit_zone_text {
+    height: 4vh;
+  }
+  /* .edit_zone_map {
+    height: 88vh;
+  } */
+  /* .edit-zone_map_child {
+    height: 80vh;
+  }
+  .edit_zone_map_text {
+    height: 8vh;
+  }
+  .edit_zone_map_btn {
+    height: 3.7vh;
+  }
+  .edit_zone_map_main {
+    height: 65.5vh;
+  } */
+}
+@media (max-width: 740px) {
+  .edit_zone_main {
+    height: 87vh;
+  }
+  #add_zone_redraw_btn {
+    margin-top: 3%;
+  }
+  .edit_zone_text {
+    height: 6vh !important;
+  }
+  /* .edit_zone_map {
+    height: 88vh;
+  } */
+  .edit-zone_map_child {
+    height: auto;
+  }
+  .edit_zone_map_text {
+    height: auto;
+  }
+  .edit_zone_map_btn {
+    height: auto;
+  }
+  .edit_zone_map_main {
+    height: 65.5vh;
+  }
+}
+.add_zone_main {
+  height: 93vh;
+}
+.add_zone_text {
+  height: 4vh;
+}

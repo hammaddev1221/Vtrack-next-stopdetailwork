@@ -1,0 +1,60 @@
+.css-levciy-MuiTablePagination-displayedRows {
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  font-weight: 400;
+  font-size: 0.875rem;
+  line-height: 1.43;
+  letter-spacing: 0.01071em;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+  display: none;
+}
+.css-yuzg60-MuiButtonBase-root-MuiPaginationItem-root.Mui-selected {
+  background-color: #00b56c !important;
+  color: white !important;
+}
+
+.css-78c6dr-MuiToolbar-root-MuiTablePagination-toolbar
+  .MuiTablePagination-actions {
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+  margin-left: 20px;
+  display: none;
+}
+.delete_zone_button {
+  margin-left: 20%;
+  margin-top: -18%;
+}
+::-webkit-scrollbar {
+  width: 0px;
+}
+/* 0 */
+
+.camera_loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 40vh;
+  margin-left: -4%;
+}
+#zone_hover {
+  font-weight: 600;
+}
+#zone_hover:hover {
+  background-color: #00b56c !important;
+  color: white;
+  font-weight: 600;
+}
+.MuiOutlinedInput-notchedOutline {
+  border-color: #d3d3d3 !important;
+  outline: #00b56c !important;
+}
+
+.MuiOutlinedInput-notchedOutline:hover {
+  border: #00b56c !important;
+}
+
+.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: #00b56c !important;
+}

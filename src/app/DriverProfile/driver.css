@@ -1,0 +1,333 @@
+/* .table_text {
+  font-size: 16px;
+}
+#table_head {
+  font-size: 18px;
+} */
+::-webkit-scrollbar {
+  width: 10px;
+  background-color: rgb(255, 255, 255);
+}
+
+#table_head {
+  font-size: 18px;
+}
+
+.bg_hover_rfid:hover {
+  background-color: #00b56c;
+  color: white;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #29303b;
+  border-radius: 7px;
+}
+
+.MuiOutlinedInput-notchedOutline {
+  border-color: #d3d3d3 !important;
+  outline: #00b56c;
+}
+
+.MuiOutlinedInput-notchedOutline:hover {
+  border: #00b56c !important;
+}
+
+.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: #00b56c !important;
+}
+
+.assign_driver_hover:hover {
+  background-color: #00b56c !important;
+  color: white !important;
+}
+
+/* .custom-dropdown select {
+  background-color: white; 
+  color: black;
+  border: 1px solid #ccc;
+  padding: 10px;
+  width: 100%;
+  box-sizing: border-box;
+  appearance: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+} */
+
+.custom-dropdown .option-item:hover {
+  background-color: green !important;
+  color: white;
+}
+
+.css-78c6dr-MuiToolbar-root-MuiTablePagination-toolbar {
+  position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-left: 16px;
+  padding-right: 16px;
+  min-height: 56px;
+  min-height: 52px;
+  padding-right: 2px;
+  color: black;
+  font-size: 17px;
+}
+
+.css-levciy-MuiTablePagination-displayedRows {
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  font-weight: 400;
+  font-size: 17px;
+  line-height: 1.43;
+  letter-spacing: 0.01071em;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+}
+
+.popup_style {
+  width: 40%;
+}
+
+.main_driver {
+  height: 93vh;
+}
+
+.drivers_text {
+  height: 4vh;
+  border-top: 2px solid white !important;
+}
+
+.drivers_add_popup {
+  height: 6vh !important;
+}
+
+.table_driver_profile {
+  height: 62vh;
+}
+
+.table_pagination {
+  height: 6vh;
+}
+
+@media (max-width: 1900px) and (min-width: 1570px) {
+  .drivers_add_popup {
+    height: 8vh !important;
+  }
+}
+
+@media (max-width: 1571px) and (min-width: 1195px) {
+  .drivers_add_popup {
+    height: 8vh !important;
+  }
+
+  .table_driver_profile {
+    height: 68vh;
+  }
+
+  .table_pagination {
+    height: 8vh;
+  }
+
+  .total_driver_text {
+    grid-column: 3 span;
+  }
+
+  .driver_add_new {
+    grid-column: 6 span;
+  }
+
+  .search_driver {
+    grid-column: 3 span;
+  }
+}
+
+@media (max-width: 1200px) and (min-width: 1001px) and (max-height: 650px) {
+  .drivers_add_popup {
+    height: 8vh !important;
+  }
+
+  .driver_add_new {
+    grid-column: 6 span;
+  }
+
+  .table_driver_profile {
+    height: 67vh;
+  }
+
+  .table_pagination {
+    height: 10vh;
+  }
+
+  .drivers_add_popup {
+    height: 10vh !important;
+  }
+
+  .drivers_text {
+    height: 7vh;
+  }
+}
+
+@media (max-width: 1200px) and (min-width: 1001px) {
+  .drivers_add_popup {
+    height: 10vh !important;
+  }
+
+  /* .driver_add_new {
+    grid-column: 6 span;
+  } */
+  .table_driver_profile {
+    height: 67vh;
+  }
+
+  /* .table_pagination {
+    height: 10vh;
+  }
+  .drivers_add_popup {
+    height: 10vh !important;
+  }
+  .drivers_text {
+    height: 7vh;
+  } */
+  .popup_style {
+    width: 80%;
+  }
+}
+
+@media (max-width: 1000px) and (min-width: 750px) {
+  .main_driver {
+    height: 85vh;
+  }
+
+  .popup_style {
+    width: 80%;
+  }
+
+  .drivers_add_popup {
+    height: 12vh !important;
+  }
+
+  .drivers_text {
+    height: 4vh;
+    border-top: 2px solid white !important;
+  }
+
+  .total_driver_text {
+    text-align: left !important;
+  }
+
+  .drivers_add_popup {
+    height: 10vh;
+  }
+
+  .table_driver_profile {
+    height: 67vh;
+  }
+
+  .table_pagination {
+    height: 7vh;
+  }
+}
+
+@media (max-width: 750px) {
+  .driver_add_new {
+    text-align: center;
+    margin-bottom: 2%;
+  }
+
+  .text_total_driver {
+    margin-bottom: 3.5%;
+  }
+
+  .popup_style {
+    width: 90%;
+    margin-top: 50%;
+  }
+
+  .main_driver {
+    height: 8vh !important;
+    /* background-color: rgb(21, 17, 17); */
+  }
+
+  .main_driver {
+    height: auto;
+    /* background-color: rgb(21, 17, 17); */
+  }
+
+  .drivers_text {
+    height: auto;
+    border-top: 2px solid white !important;
+  }
+
+  .drivers_add_popup {
+    height: auto !important;
+  }
+
+  .table_driver_profile {
+    height: 50vh;
+    /* overflow-y: scroll; */
+  }
+
+  .table_pagination {
+    height: 7vh;
+  }
+
+  #table_head {
+    font-size: 16px;
+  }
+}
+
+.custom-select {
+  position: relative;
+  display: inline-block;
+}
+
+.selected-option {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.options {
+  position: absolute;
+  top: calc(100% + 5px);
+  left: 0;
+  width: 100%;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-top: none;
+  border-radius: 0 0 5px 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 999;
+}
+
+.option {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.option:hover {
+  background-color: #00b56c;
+  /* Change to your desired hover background color */
+  color: #fff;
+  /* Change to your desired text color on hover */
+}
+
+.add_new_driver_btn {
+  margin-bottom: 2%;
+}
+
+/* .MuiButtonBase-root {
+  width: 100% !important;
+} */
+
+/* For responsive scrolling of the table body */
+.table-container {
+  max-height: 600px;
+  /* Adjust based on your needs */
+  overflow-y: auto;
+}

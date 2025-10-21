@@ -1,0 +1,44 @@
+.table_text_inactive {
+  font-size: 16px;
+}
+
+#table_head_inactive {
+  font-size: 18px;
+}
+
+.css-78c6dr-MuiToolbar-root-MuiTablePagination-toolbar {
+  position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding-left: 16px;
+  padding-right: 16px;
+  min-height: 56px;
+  min-height: 52px;
+  padding-right: 2px;
+  color: black;
+  font-size: 17px;
+}
+
+.css-levciy-MuiTablePagination-displayedRows {
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  font-weight: 400;
+  font-size: 17px;
+  line-height: 1.43;
+  letter-spacing: 0.01071em;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+}
+
+/* For responsive scrolling of the table body */
+.table-container {
+  max-height: 500px;
+  /* Adjust based on your needs */
+  overflow-y: auto;
+}

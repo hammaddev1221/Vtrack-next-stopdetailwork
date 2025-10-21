@@ -1,0 +1,890 @@
+.notification-search {
+  border: 2px solid #00b56c !important;
+  outline: none;
+}
+
+.ant-table.ant-table-bordered>.ant-table-container>.ant-table-content>table>thead>tr>th,
+.ant-table.ant-table-bordered>.ant-table-container>.ant-table-header>table>thead>tr>th,
+.ant-table.ant-table-bordered>.ant-table-container>.ant-table-body>table>thead>tr>th,
+.ant-table.ant-table-bordered>.ant-table-container>.ant-table-content>table>tbody>tr>td,
+.ant-table.ant-table-bordered>.ant-table-container>.ant-table-header>table>tbody>tr>td,
+.ant-table.ant-table-bordered>.ant-table-container>.ant-table-body>table>tbody>tr>td,
+.ant-table.ant-table-bordered>.ant-table-container>.ant-table-content>table>tfoot>tr>th,
+.ant-table.ant-table-bordered>.ant-table-container>.ant-table-header>table>tfoot>tr>th,
+.ant-table.ant-table-bordered>.ant-table-container>.ant-table-body>table>tfoot>tr>th,
+.ant-table.ant-table-bordered>.ant-table-container>.ant-table-content>table>tfoot>tr>td,
+.ant-table.ant-table-bordered>.ant-table-container>.ant-table-header>table>tfoot>tr>td,
+.ant-table.ant-table-bordered>.ant-table-container>.ant-table-body>table>tfoot>tr>td {
+  border-color: #00b56c;
+}
+
+.ant-table-thead>tr>td {
+  font-size: 16px !important;
+  color: rgb(255 255 255) !important;
+  font-weight: 500 !important;
+  text-align: left !important;
+  border-bottom: 1px solid #f0f0f0 !important;
+}
+
+.ant-table-thead>tr>th {
+  font-size: 16px !important;
+  color: rgb(255 255 255) !important;
+  font-weight: 500 !important;
+  text-align: left !important;
+  background: #00b56c !important;
+  border-bottom: 1px solid #f0f0f0 !important;
+}
+
+.MuiPickersDatePickerRoot-toolbar {
+  align-items: flex-start !important;
+  flex-direction: column !important;
+  background-color: #00b56c !important;
+}
+
+.MuiPickersDay-daySelected {
+  color: #fff !important;
+  font-weight: 500 !important;
+  background-color: #00b56c !important;
+}
+
+.MuiFormHelperText-root.Mui-error {
+  color: #f44336;
+  display: none;
+}
+
+.MuiInput-underline:after {
+  right: 0;
+  bottom: 0;
+  content: "";
+  position: absolute;
+  transform: scaleX(0);
+  transition: transform 200ms cubic-bezier(0, 0, 0.2, 1) 0ms;
+  border-bottom: 1px solid #8a8c94 !important;
+  pointer-events: none;
+}
+
+/* p.MuiTypography-root.MuiTypography-body2.MuiTypography-colorInherit {
+    color: #3b413f;
+  } */
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+  background-color: rgb(227, 224, 224);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #29303b;
+  border-radius: 7px;
+}
+
+#bg_hover_select_vehicle {
+  font-weight: 600;
+  width: 100%;
+  display: flex;
+  justify-content: start;
+  margin-left: 3%;
+  padding: 2% 3%;
+}
+
+#bg_hover_select_vehicle:hover {
+  background-color: #00b56c;
+  color: white;
+  font-weight: 600;
+  width: 100%;
+  padding-top: 2%;
+  padding-bottom: 2%;
+}
+
+#select_slider {
+  font-weight: 600;
+}
+
+#select_slider:hover {
+  background-color: #00b56c;
+  color: white;
+}
+
+/* Handle on hover */
+/* .Select_box::-webkit-scrollbar-thumb:hover {
+    background: #00b56c;
+  } */
+
+.leaflet-touch .leaflet-bar a {
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  color: #00b56c;
+}
+
+input[type="checkbox"]:hover {
+  outline: 1px auto #00b56c;
+  cursor: pointer;
+}
+
+.MuiOutlinedInput-notchedOutline {
+  border-color: #d3d3d3 !important;
+  outline: #00b56c;
+}
+
+.MuiOutlinedInput-notchedOutline:hover {
+  /* border-width: 1px !important; */
+  border: #00b56c !important;
+}
+
+.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: #00b56c !important;
+}
+
+#select_slider {
+  padding-top: 5%;
+  padding-bottom: 5%;
+  padding-left: 4%;
+  display: flex;
+  justify-content: start;
+}
+
+.main_journey {
+  height: 93vh;
+}
+
+.journey_heading {
+  height: 4vh;
+}
+
+.select_box_journey {
+  height: 6vh;
+  align-items: center;
+  gap: 10px;
+}
+
+.journey_sidebar {
+  height: 83vh;
+}
+
+.journey_sidebar_text {
+  height: 3vh;
+}
+
+.journey_heading {
+  height: 4vh;
+}
+
+#trips_handle {
+  height: 80vh;
+}
+
+.journey_map {
+  height: 83vh;
+}
+
+@media (max-width: 1900px) and (min-width: 1570px) {
+  .select_box_journey {
+    height: 7vh;
+    margin-top: -1%;
+    align-items: center;
+  }
+
+  .journey_heading {
+    height: 7vh;
+  }
+
+  .select_box_column {
+    grid-column: 2 span;
+    width: 90%;
+  }
+
+  .period_select {
+    grid-column: 2 span;
+  }
+
+  .trips_journey {
+    grid-column: 2 span;
+    width: 57%;
+  }
+
+  .journey_map {
+    grid-column: 3 span;
+    margin-left: -13.4%;
+  }
+
+  .journey_replay_harsh_child {
+    grid-column: 1 span;
+  }
+
+  .journey_replay_harsh {
+    grid-column: 2 span;
+  }
+
+  .journey_replay_harsh_acce {
+    grid-column: 1 span;
+  }
+
+  .stop_journey {
+    grid-column: 3 span;
+  }
+
+  .journey_replay_slider {
+    grid-column: 5 span;
+  }
+
+  .journey_replay_center_box {
+    left: -1%;
+    /*  right: 10%; */
+  }
+
+  .main_journey {
+    height: 93vh !important;
+    overflow: hidden;
+  }
+
+  .journey_sidebar_text {
+    height: 3vh;
+  }
+
+  .journey_heading {
+    height: 6vh;
+  }
+
+  #trips_handle {
+    height: 78vh;
+  }
+
+  .journey_map {
+    height: 81vh;
+  }
+}
+
+@media (max-width: 1571px) and (min-width: 1484px) {
+  .select_box_column {
+    grid-column: 2 span;
+  }
+
+  .period_select {
+    grid-column: 3 span;
+  }
+
+  .select_box_journey {
+    height: 8vh;
+    align-items: center;
+  }
+
+  .trips_journey {
+    grid-column: 2 span;
+    width: 63%;
+  }
+
+  .journey_map {
+    grid-column: 3 span;
+    margin-left: -11.6%;
+  }
+
+  .journey_replay_harsh_child {
+    grid-column: 1 span;
+  }
+
+  .journey_replay_harsh {
+    grid-column: 2 span;
+  }
+
+  .journey_replay_harsh_acce {
+    grid-column: 1 span;
+  }
+
+  .stop_journey {
+    grid-column: 3 span;
+  }
+
+  .journey_heading {
+    height: 6vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+@media (max-width: 1485px) and (min-width: 1300px) {
+  .journey_heading {
+    height: 6vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .select_box_column {
+    grid-column: 2 span;
+  }
+
+  .period_select {
+    grid-column: 3 span;
+  }
+
+  .select_box_journey {
+    height: 8vh;
+    align-items: center;
+  }
+
+  .trips_journey {
+    grid-column: 2 span;
+    width: 75%;
+  }
+
+  .journey_map {
+    grid-column: 3 span;
+    margin-left: -7.7%;
+  }
+
+  .journey_replay_harsh_child {
+    grid-column: 1 span;
+    margin-left: -18%;
+  }
+
+  .journey_replay_harsh {
+    grid-column: 1 span;
+  }
+
+  .journey_replay_harsh_acce {
+    grid-column: 2 span;
+  }
+
+  .stop_journey {
+    grid-column: 3 span;
+  }
+
+  .journey_replay_slider {
+    grid-column: 6 span;
+  }
+
+  .journey_replay_center_box {
+    left: -6%;
+    right: 20%;
+  }
+}
+
+@media (max-width: 1301px) and (min-width: 1199px) {
+  .select_box_column {
+    grid-column: 2 span;
+  }
+
+  .period_select {
+    grid-column: 3 span;
+  }
+
+  .journey_replay_slider_res {
+    grid-column: 9 span;
+  }
+
+  .select_journey_speed {
+    grid-column: 3 span;
+  }
+
+  #today_journey {
+    margin-left: 6% !important;
+  }
+
+  #custom_journey {
+    margin-left: -1.4rem !important;
+  }
+
+  .select_box_journey {
+    height: 8vh;
+    align-items: center;
+    display: grid;
+    gap: 0 !important;
+  }
+
+  .trips_journey {
+    grid-column: 2 span;
+    width: 79%;
+  }
+
+  .journey_map {
+    grid-column: 3 span;
+    margin-left: -6.8%;
+  }
+
+  .journey_heading {
+    height: 6vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .journey_sidebar_text {
+    height: 4vh;
+  }
+
+  .stop_journey {
+    grid-column: 3 span;
+  }
+
+  .stop_details_time {
+    grid-column: 7 span;
+  }
+
+  .journey_replay_slider {
+    grid-column: 12 span;
+  }
+
+  .journey_replay_center_box {
+    left: 20% !important;
+    right: 25% !important;
+    margin-left: -10%;
+    top: 65% !important;
+  }
+
+  #trips_handle {
+    height: 73vh;
+    overflow-y: scroll;
+  }
+
+  /* #map {
+      height: 78vh;
+    } */
+  #map {
+    width: 100%;
+    height: 100vh;
+    /* or a specific height if needed */
+    position: relative;
+    /* Make sure it's not positioned off-screen */
+  }
+
+  .journey_replay_harsh_child {
+    grid-column: 1 span;
+    margin-left: -22%;
+  }
+
+  .journey_replay_harsh {
+    grid-column: 1 span;
+  }
+
+  .journey_replay_harsh_acce {
+    grid-column: 2 span;
+  }
+
+  .stop_journey {
+    grid-column: 4 span;
+  }
+}
+
+@media (max-width: 1200px) and (min-width: 1048px) {
+  .select_box_journey {
+    height: 7vh;
+  }
+
+  .show_zone_journey_replay {
+    position: absolute;
+    top: 3%;
+  }
+
+  .journey_replay_slider_res {
+    grid-column: 9 span;
+  }
+
+  .select_journey_speed {
+    grid-column: 3 span;
+  }
+
+  .journey_heading {
+    height: 6vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .select_box_column {
+    grid-column: 2 span;
+  }
+
+  .period_select {
+    grid-column: 3 span;
+  }
+
+  .stop_journey {
+    grid-column: 5 span;
+  }
+
+  .journey_replay_slider {
+    grid-column: 11 span;
+  }
+}
+
+@media (max-width: 1049px) and (min-width: 769px) and (max-height: 650px) {
+  .show_zone_journey_replay {
+    position: absolute;
+    top: 3%;
+  }
+
+  .journey_replay_center_box {
+    position: absolute;
+    bottom: 3% !important;
+    top: 75% !important;
+  }
+
+  #speed_meter {
+    position: absolute;
+    top: 34% !important;
+    /* left: 5%; */
+    right: 6% !important;
+    display: flex;
+    justify-content: end;
+  }
+
+  .select_box_column {
+    margin: 0% 4% !important;
+  }
+
+  .select_box_journey {
+    height: 10vh;
+    align-items: center;
+  }
+
+  .period_select {
+    grid-column: 3 span;
+  }
+
+  .journey_sidebar_text {
+    height: 5vh;
+  }
+
+  .stop_journey {
+    grid-column: 5 span;
+  }
+
+  .stop_details_time {
+    grid-column: 7 span;
+  }
+
+  .journey_replay_slider {
+    grid-column: 12 span;
+  }
+
+  #trips_handle {
+    height: 90vh !important;
+    overflow-y: scroll;
+  }
+
+  #map {
+    height: 95vh !important;
+  }
+
+  .journey_replay_center_box {
+    bottom: 30% !important;
+  }
+
+  .select_box_journey {
+    height: auto;
+  }
+
+  .journey_replay_harsh_child {
+    grid-column: 2 span;
+  }
+
+  .journey_replay_harsh {
+    grid-column: 1 span;
+  }
+
+  .journey_replay_harsh_acce {
+    grid-column: 3 span;
+  }
+}
+
+@media (max-width: 1049px) and (min-width: 765px) {
+  .show_zone_journey_replay {
+    position: absolute;
+    top: 3%;
+  }
+
+  .journey_replay_center_box {
+    position: absolute;
+    top: 55%;
+    right: 0%;
+    /* margin-left: -20%; */
+  }
+
+  #speed_meter {
+    position: absolute;
+    top: 22%;
+    /*  left: 5%; */
+    right: 6% !important;
+    display: flex;
+    justify-content: end;
+  }
+
+  .select_box_column {
+    margin: 0% 4% !important;
+  }
+
+  .select_box_journey {
+    height: 10vh;
+    align-items: center;
+  }
+
+  .period_select {
+    grid-column: 3 span;
+  }
+
+  .journey_sidebar_text {
+    height: 5vh;
+  }
+
+  .journey_heading {
+    height: 5vh !important;
+    padding-top: -10% !important;
+    /* z-index: -9999 !important; */
+  }
+
+  .stop_journey {
+    grid-column: 5 span;
+  }
+
+  .stop_details_time {
+    grid-column: 8 span;
+  }
+
+  .journey_replay_slider {
+    grid-column: 12 span !important;
+  }
+
+  #trips_handle {
+    height: 63vh !important;
+    overflow-y: scroll;
+  }
+
+  #map {
+    height: 70vh;
+  }
+
+  .journey_replay_center_box {
+    bottom: 30% !important;
+  }
+
+  .select_box_journey {
+    height: auto;
+  }
+
+  .journey_replay_harsh_child {
+    grid-column: 2 span;
+  }
+
+  .journey_replay_harsh {
+    grid-column: 1 span;
+  }
+
+  .journey_replay_harsh_acce {
+    grid-column: 3 span;
+  }
+}
+
+@media (max-width: 766px) and (min-width: 610px) {
+  .select_box_column {
+    margin-top: 3%;
+  }
+
+  .search_btn_journey {
+    margin-left: 4% !important;
+  }
+
+  .select_box_column {
+    margin: 2% 2% !important;
+  }
+
+  #speed_meter {
+    position: absolute;
+    top: 22%;
+    /* left: 5%; */
+    right: 6% !important;
+    display: flex;
+    justify-content: end;
+  }
+
+  .select_box_journey {
+    height: 20vh;
+    align-items: center;
+  }
+
+  .period_select {
+    margin-left: 12%;
+    grid-column: 3 span;
+  }
+
+  .select_box_journey {
+    height: auto;
+  }
+
+  .journey_replay_harsh_child {
+    grid-column: 2 span;
+  }
+
+  .journey_replay_harsh {
+    grid-column: 2 span;
+  }
+
+  .journey_replay_harsh_acce {
+    grid-column: 2 span;
+  }
+
+  .journey_replay_slider {
+    grid-column: 12 span;
+  }
+
+  .journey_replay_center_box {
+    left: 20% !important;
+  }
+
+  #trips_handle {
+    height: 30vh;
+    overflow-y: scroll;
+  }
+
+  .journey_heading {
+    height: 5vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 600px) and (min-width: 319px) {
+  .journey_sidebar_text {
+    height: 5.5vh;
+  }
+
+  #yesterday_radio_button {
+    margin-left: -0.5% !important;
+  }
+
+  .select_box_column {
+    margin: 3% 2% !important;
+  }
+
+  .select_box_journey {
+    height: auto;
+    align-items: center;
+  }
+
+  .period_select {
+    grid-column: 6 span;
+    /* margin-left: 3%; */
+  }
+
+  .period_select_custom {
+    grid-column: 6 span;
+    display: flex;
+    justify-content: start;
+    margin-left: -2%;
+  }
+
+  .journey_heading {
+    height: 5vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #trips_handle {
+    height: 30vh;
+    overflow-y: scroll;
+  }
+
+  #speed_meter {
+    position: absolute;
+    top: 33% !important;
+    /* left: 5%; */
+    right: 8% !important;
+    display: flex;
+    justify-content: end;
+  }
+
+  .trip_address {
+    height: 12.5vh;
+    overflow-y: scroll;
+  }
+
+  .days_select {
+    margin-left: 4%;
+  }
+}
+
+@media (max-width: 320px) {
+  .journey_sidebar_text {
+    height: 5.5vh;
+  }
+
+  .play_pause_icon {
+    grid-column: 7 span;
+  }
+
+  .select_box_column {
+    margin: 3% 2% !important;
+  }
+
+  .select_box_journey {
+    height: auto;
+    align-items: center;
+  }
+
+  .period_select {
+    grid-column: 6 span;
+    /* margin-left: 3%; */
+  }
+
+  .period_select_custom {
+    grid-column: 6 span;
+    display: flex;
+    justify-content: start;
+    margin-left: -2%;
+  }
+
+  .journey_heading {
+    height: 5vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #trips_handle {
+    height: 30vh;
+    overflow-y: scroll;
+  }
+
+  #speed_meter {
+    position: absolute;
+    top: 31% !important;
+    /*   left: 5%; */
+    right: 8% !important;
+    display: flex;
+    justify-content: end;
+  }
+
+  .trip_address {
+    height: 7.5vh;
+    overflow-y: scroll;
+    margin-top: 2px !important;
+  }
+
+  .days_select {
+    margin-left: 4%;
+  }
+
+  .text_responsive {
+    font-size: 12px;
+  }
+
+  .stop_details_responsive {
+    grid-column: 11 span;
+  }
+
+  .stop_journey {
+    width: 75% !important;
+  }
+
+  .resposive_stop_details {
+    height: 14vh !important;
+    overflow-y: scroll !important;
+  }
+
+  .stop_details_time {
+    grid-column: 11 span;
+  }
+}

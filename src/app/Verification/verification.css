@@ -1,0 +1,9 @@
+#forget_card_bg_color {
+  background-color: rgba(0, 0, 0, 0.4);
+  border-radius: 12px;
+}
+
+#border_radius_logo_forget {
+  border-top-right-radius: 12px;
+  border-top-left-radius: 12px;
+}
