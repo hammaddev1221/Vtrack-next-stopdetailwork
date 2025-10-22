@@ -5,8 +5,8 @@ import { zonelistType } from "@/types/zoneType";
 import axios from "axios";
 import { immobiliserequest } from "@/types/immobiliserequest";
 // import uniqueDataByIMEIAndLatestTimestamp from "./uniqueDataByIMEIAndLatestTimestamp";
-  var URL = "http://localhost:3001"
-//var URL ="https://backend.vtracksolutions.com";
+  //var URL = "http://localhost:3001"
+var URL ="https://backend.vtracksolutions.com";
 export async function getVehicleDataByClientId(clientId: string) {
   try {
     const response = await fetch(
