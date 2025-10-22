@@ -898,74 +898,77 @@ export default function JourneyReplayComp() {
         //     });
         //   }
         // }
-        const stopTimesArray: any[] = [];
-        const data = TravelHistoryresponseapi?.data || [];
-        let cond = false
-        for (let i = 0; i < data.length; i++) {
-          const current = data[i];
+   const stopTimesArray: any[] = [];
+const data = TravelHistoryresponseapi?.data || [];
 
-          // Start tracking if speed is 0 and ignition is ON
-          const isStartOfStop = (current.ignition === 1) && (current.speed === "0 Kph" || current.speed === "0 Mph");
+let conditionMet = false;
+let startTime: Date | null = null;
 
-          if (isStartOfStop && !cond) {
-            cond = true;
-            const startTime = new Date(current.timeStamp);
-            let endTime = null;
-            let j = i + 1;
+const zeroSpeedString = session.unit === "KM" ? "0 Kph" : "0 Mph";
 
-            while (j < data.length) {
-              const next = data[j];
+for (let i = 0; i < data.length; i++) {
+  const current = data[i];
 
-              const isStopped = next.speed === "0 Kph" || next.speed === "0 Mph";
-              const isIgnitionOff = next.ignition === 0;
-              const isMoving = !(isStopped || isIgnitionOff); // Means speed > 0 and ignition ON
+  const hasIgnitionOn = current.ignition === 1;
+  const hasTripOn = current.trip === 1;
+  const hasSpeedZero = current.speed === zeroSpeedString;
 
-              if (isMoving) {
-                // Vehicle started moving
-                endTime = new Date(next.timeStamp);
-                break;
-              } else if (isIgnitionOff) {
-                // Vehicle turned off, treat that as stop end too
-                endTime = new Date(next.timeStamp);
-                break;
-              }
+  if (hasSpeedZero && hasIgnitionOn && hasTripOn && !conditionMet) {
+    // Start stop period
+    conditionMet = true;
+    startTime = new Date(current.timeStamp);
 
-              j++;
-            }
+    // Temporarily push object with date, address, lat, lng only
+    // Duration/time will be added once stop ends
+    stopTimesArray.push({
+      date: current.timeStamp,
+      address: current.address?.display_name || "",
+      lat: current.lat,
+      lng: current.lng,
+      time: "",      // Will be updated later
+      duration: 0,   // Will be updated later
+    });
+  } else if (
+    (!hasSpeedZero || !hasIgnitionOn || !hasTripOn) &&
+    conditionMet
+  ) {
+    // Stop period ends here
+    const endTime = new Date(current.timeStamp);
 
-            // If we reached end and no movement or ignition off, use last timestamp
-            if (!endTime && j >= data.length && data.length > 0) {
-              endTime = new Date(data[data.length - 1].timeStamp);
-            }
+    if (startTime) {
+      const diffInSeconds = Math.floor((endTime.getTime() - startTime.getTime()) / 1000);
+      const minutes = Math.floor(diffInSeconds / 60);
+      const seconds = diffInSeconds % 60;
+      const formattedTime = `${minutes > 0 ? minutes + "m " : ""}${seconds}s`;
 
-            // Calculate duration
-            if (endTime) {
-              const diffInSeconds = Math.floor((endTime.getTime() - startTime.getTime()) / 1000);
-              if (diffInSeconds > 0) {
-                const minutes = Math.floor(diffInSeconds / 60);
-                const seconds = diffInSeconds % 60;
+      const lastIndex = stopTimesArray.length - 1;
+      stopTimesArray[lastIndex].time = formattedTime;
+      stopTimesArray[lastIndex].duration = diffInSeconds;
 
-                const formattedTime = `${minutes > 0 ? minutes + "m " : ""}${seconds}s`;
+      conditionMet = false;
+      startTime = null;
+    }
+  }
+}
 
-                stopTimesArray.push({
-                  date: current.timeStamp,
-                  time: formattedTime,
-                  address: current.address?.display_name || "",
-                  lat: current.lat,
-                  lng: current.lng,
-                  duration: diffInSeconds,
-                });
-              }
+// Handle case when stop period lasts until last record
+if (conditionMet && startTime && data.length > 0) {
+  const endTime = new Date(data[data.length - 1].timeStamp);
+  const diffInSeconds = Math.floor((endTime.getTime() - startTime.getTime()) / 1000);
+  const minutes = Math.floor(diffInSeconds / 60);
+  const seconds = diffInSeconds % 60;
+  const formattedTime = `${minutes > 0 ? minutes + "m " : ""}${seconds}s`;
 
-              // Skip processed records
-              i = j - 1;
-              cond = false; // Reset for next possible stop period
-            }
-          }
-        }
+  const lastIndex = stopTimesArray.length - 1;
+  stopTimesArray[lastIndex].time = formattedTime;
+  stopTimesArray[lastIndex].duration = diffInSeconds;
+}
 
-        console.log("stopTimesArray", stopTimesArray);
-        setStopWithSecond(stopTimesArray);
+console.log("stopTimesArray", stopTimesArray);
+setStopWithSecond(stopTimesArray);
+
+
+
         setTravelHistoryresponse(TravelHistoryresponseapi.data);
 
       }
