@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useMemo, useCallback, memo } from "react";
 import dynamic from "next/dynamic";
 import { useSession } from "next-auth/react";
 import { Toaster, toast } from "react-hot-toast";
@@ -8,7 +8,7 @@ import { CloseCircleOutlined, CarOutlined } from "@ant-design/icons";
 import moment from "moment";
 import Select from "react-select";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEdit, faTrashAlt } from "@fortawesome/free-solid-svg-icons"; // Specific icons for actions
+import { faEdit, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import {
   createBooking,
   getAllVehicleByUserId,
@@ -134,6 +134,16 @@ function Bookings() {
   const { data: session } = useSession();
   // const { BaseLayer } = LayersControl;
   const [disabledPickup, setDisabledPickup] = useState(false);
+  const daysOptions = useMemo(() => [
+    { value: "monday", label: "Monday" },
+    { value: "tuesday", label: "Tuesday" },
+    { value: "wednesday", label: "Wednesday" },
+    { value: "thursday", label: "Thursday" },
+    { value: "friday", label: "Friday" },
+    { value: "saturday", label: "Saturday" },
+    { value: "sunday", label: "Sunday" },
+  ], []);
+
   const defaultFormData = {    
     _id: "",
     id: "",
@@ -267,23 +277,31 @@ function Bookings() {
   const [allowMultiBook, setAllowMultiBook] = useState(false);
 
   const [id, setId] = useState("");
-
+  const [selectedBookingIds, setSelectedBookingIds] = useState<string[]>([]);
+  const [selectedDays, setSelectedDays] = useState([]);
+  const [availableDays, setAvailableDays] = useState(daysOptions);
+  const [numWeeks, setNumWeeks] = useState(1);
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(addWeeks(new Date(), 1));
+  const [manualEndDate, setManualEndDate] = useState(false);
 
 
   if (!session?.featureBookingApp) {
     redirect("/liveTracking");
   }
 
-  function getBookings() {
+  const getBookings = useCallback(() => {
+    if (!session?.accessToken || !session?.clientId || !session?.timezone) return;
+    
     const today = moment()
-      .tz(session?.timezone)
+      .tz(session.timezone)
       .clone()
       .startOf("day")
       .format("YYYY-MM-DD");
 
     getBooking({
-      token: session?.accessToken,
-      query: { clientId: session?.clientId },
+      token: session.accessToken,
+      query: { clientId: session.clientId },
     }).then((resp: any) => {
       if (resp?.success) {
         setRawbookings(resp.data);
@@ -308,7 +326,7 @@ function Bookings() {
         toast.error(resp.message);
       }
     });
-  }
+  }, [session?.accessToken, session?.clientId, session?.timezone]);
   const [clientSettings, setClientSettings] = useState<ClientSettings[]>([]);
 
   const [selectedVehicle, setSelectedVehicle] = useState<VehicleData | null>(
@@ -464,8 +482,59 @@ function Bookings() {
       default:
         null;
     }
+    // Clear selected bookings when filter changes
+    setSelectedBookingIds([]);
   }, [period]);
-  const [columns] = useState([
+
+  // Memoize columns to prevent re-creation on every render
+  const columns = useMemo(() => [
+    {
+      title: (
+        <input
+          type="checkbox"
+          onChange={(e) => {
+            if (e.target.checked) {
+              // Select all allocated bookings
+              const allocatedIds = bookings
+                .filter((b) => b.status?.toLowerCase() === "allocated")
+                .map((b) => b._id);
+              setSelectedBookingIds(allocatedIds);
+            } else {
+              // Deselect all
+              setSelectedBookingIds([]);
+            }
+          }}
+          checked={
+            bookings.filter((b) => b.status?.toLowerCase() === "allocated").length > 0 &&
+            selectedBookingIds.length === bookings.filter((b) => b.status?.toLowerCase() === "allocated").length
+          }
+          className="form-checkbox h-4 w-4 ml-3"
+          style={{ accentColor: "green" }}
+        />
+      ),
+      key: "select",
+      width: 50,
+      fixed: "left" as const,
+      render: (_, record) => {
+        const isAllocated = record.status?.toLowerCase() === "allocated";
+        return (
+          <input
+            type="checkbox"
+            disabled={!isAllocated}
+            checked={selectedBookingIds.includes(record._id)}
+            onChange={(e) => {
+              if (e.target.checked) {
+                setSelectedBookingIds((prev) => [...prev, record._id]);
+              } else {
+                setSelectedBookingIds((prev) => prev.filter((id) => id !== record._id));
+              }
+            }}
+            className="form-checkbox h-4 w-4"
+            style={{ accentColor: "green", cursor: isAllocated ? "pointer" : "not-allowed" }}
+          />
+        );
+      },
+    },
     {
       title: "Pickup Point",
       dataIndex: "pickup",
@@ -593,30 +662,36 @@ function Bookings() {
       render: (status: any, record: any) => {
         let color;
         switch (status) {
-          case "Allocated":
+        
+          case "allocated":
             color = "processing"; // Blue, indicates it's in the system/being processed
             break;
-          case "OnMyWay":
+          case "start":
             color = "volcano"; // Orange/Red, indicates active movement
             break;
-          case "Arrived":
+          case "arrived":
             color = "cyan"; // Cyan, indicates arrival
             break;
-          case "InTrip":
+          case "inTrip":
             color = "geekblue"; // Blue, indicates trip in progress
             break;
-          case "Approaching":
+          case "approaching":
             color = "purple"; // Purple, indicates nearing destination
             break;
-          case "Complete":
+          case "complete":
             color = "success"; // Green, indicates successful completion
             break;
-          case "Cancelled":
-            color = "error"; // Red, indicates cancellation
-            break;
-          case "Pending":
+        
+          case "pending":
             color = "warning"; // Yellow, indicates waiting/not started yet
             break;
+            case "pendingAccept":
+  color = "magenta"; // Magenta, indicates the task is delayed or encountering issues
+  break;
+case "pendingStart":
+  color = "gold"; // Gold, indicates temporarily on hold or paused
+  break;
+
           default:
             color = "default"; // Grey for unknown/unexpected status
         }
@@ -654,7 +729,7 @@ function Bookings() {
       key: "_id",
       dataIndex: "_id",
       width: 90, // Fixed width for action buttons
-      fixed: "right", // Keep actions column visible when scrolling horizontally
+      fixed: "right" as const, // Keep actions column visible when scrolling horizontally
       render: (text, record) => (
         <div className="flex gap-2 justify-center">
           {/* Edit Icon */}
@@ -667,7 +742,6 @@ function Bookings() {
               setisEdit(true);
               setModalOpen(true);
               setFormData(record);
-              console.log(record)
               setRouteCoords(record?.coordinates);
             }}
           />
@@ -684,21 +758,23 @@ function Bookings() {
         </div>
       ),
     },
-  ]);
+  ], [bookings, selectedBookingIds]);
 
-  const handleInputChangeJourney: any = (e: any) => {
+  const handleInputChangeJourney = useCallback((e: any) => {
     setFormData((prev) => ({ ...prev, journey: e.target.value }));
-  };
-  const handleInputChangeConfirmEmail: any = (e: any) => {
-    setFormData((prev) => ({ ...prev, confirmEmail: !formdata.confirmEmail }));
-  };
+  }, []);
+  
+  const handleInputChangeConfirmEmail = useCallback((e: any) => {
+    setFormData((prev) => ({ ...prev, confirmEmail: !prev.confirmEmail }));
+  }, []);
 
-  const handleInputChangesignature: any = (e: any) => {
-    setFormData((prev) => ({ ...prev, Allowsignature: !formdata.Allowsignature }));
-  };
-  const handleInputChangeAllowImage: any = (e: any) => {
-    setFormData((prev) => ({ ...prev, AllowImage: !formdata.AllowImage }));
-  };
+  const handleInputChangesignature = useCallback((e: any) => {
+    setFormData((prev) => ({ ...prev, Allowsignature: !prev.Allowsignature }));
+  }, []);
+  
+  const handleInputChangeAllowImage = useCallback((e: any) => {
+    setFormData((prev) => ({ ...prev, AllowImage: !prev.AllowImage }));
+  }, []);
 
   const [vehicleList, setVehicleList] = useState<DeviceAttach[]>([]);
   const [DriverData, setDriverData] = useState<pictureVideoDataOfVehicleT[]>(
@@ -711,32 +787,38 @@ function Bookings() {
 
   const [driverOptions, setDriverOptions] = useState<any[]>([]);
 
-  const vehicleListData = async () => {
+  const vehicleListData = useCallback(async () => {
+    if (!session?.accessToken) return;
+    
     try {
       if (session?.userRole == "Admin" || session?.userRole == "SuperAdmin") {
-        if (session) {
+        if (session.clientId) {
           const Data = await vehicleListByClientId({
-            token: session?.accessToken,
-            clientId: session?.clientId,
+            token: session.accessToken,
+            clientId: session.clientId,
           });
           setVehicleList(Data.data);
         }
       } else {
-        if (session) {
+        if (session.userId) {
           const Data = await getAllVehicleByUserId({
-            token: session?.accessToken,
-            userId: session?.userId,
+            token: session.accessToken,
+            userId: session.userId,
           });
           setVehicleList(Data.data);
         }
       }
-    } catch (error) { }
-  };
+    } catch (error) {
+      console.error("Error fetching vehicle list:", error);
+    }
+  }, [session?.accessToken, session?.clientId, session?.userId, session?.userRole]);
 
-  const getdriverData = async () => {
+  const getdriverData = useCallback(async () => {
+    if (!session?.accessToken || !session?.clientId) return;
+    
     const response = await GetDriverDataByClientId({
-      token: session?.accessToken,
-      clientId: session?.clientId,
+      token: session.accessToken,
+      clientId: session.clientId,
     });
     let drivers = response
       .filter((item: any) => item.isDeleted === false)
@@ -768,16 +850,15 @@ function Bookings() {
         value: i._id,
       }))
     );
-  };
+  }, [session?.accessToken, session?.clientId]);
+  
   useEffect(() => {
-    vehicleListData();
-    getdriverData();
     if (typeof window !== "undefined") {
       getdriverData();
       vehicleListData();
       getBookings();
     }
-  }, []);
+  }, [getdriverData, vehicleListData, getBookings]);
   const fetchTimeoutGraphQL = 60 * 1000; //60 seconds
   const [isOnline, setIsOnline] = useState(false);
   const [updatedData, setUpdateData] = useState<VehicleData[]>([]);
@@ -892,20 +973,20 @@ function Bookings() {
       socket.disconnect();
     };
   }, [isOnline, session?.clientId]);
-  const handleInputChangeVehicle = (e: any) => {
+  const handleInputChangeVehicle = useCallback((e: any) => {
     if (e?.value) {
       setFormData((prev) => ({ ...prev, vehicleId: e.value }));
     }
-  };
+  }, []);
 
-  const serviceOptions = [
+  const serviceOptions = useMemo(() => [
     { value: "engineering", label: "Engineering", timer: 30 },
     { value: "support", label: "Support", timer: 20 },
     { value: "IT", label: "IT", timer: 40 },
     { value: "cleaning", label: "Cleaning", timer: 40 },
-  ];
+  ], []);
 
-  const handleInputChangeServiceType = (e: any) => {
+  const handleInputChangeServiceType = useCallback((e: any) => {
     if (e?.value) {
       setFormData((prev) => ({
         ...prev,
@@ -913,8 +994,9 @@ function Bookings() {
         timer: serviceOptions.find((i) => i.value == e?.value)?.timer,
       }));
     }
-  };
-  const handleInputChangeDriver = (e: any) => {
+  }, [serviceOptions]);
+  
+  const handleInputChangeDriver = useCallback((e: any) => {
     if (e?.value) {
       let vehicle: string | undefined = vehicleList.find(
         (i: DeviceAttach) => i.driverId == e.value
@@ -930,19 +1012,20 @@ function Bookings() {
             : null
       }));
     }
-  };
+  }, [vehicleList, formdata.vehicleId]);
 
-  const options =
+  const options = useMemo(() =>
     vehicleList?.map((item: any) => ({
       value: item._id,
       label: item.vehicleReg,
-    })) || [];
+    })) || [], [vehicleList]);
+  
   const [addresses, setAddresses] = useState<[]>([]);
   const [query, setquery] = useState("");
   const [addresses1, setAddresses1] = useState<[]>([]);
   const [query1, setquery1] = useState("");
 
-  const handleInputChange = (e: any, key: any) => {
+  const handleInputChange = useCallback((e: any, key: any) => {
     let query: string = e;
 
     if (session && query) {
@@ -958,15 +1041,13 @@ function Bookings() {
             setAddresses1(response);
             setquery1(query);
           }
-          // if (query != "") {
-
-          //     setFormData((prev) => ({ ...prev, [key]: query }))
-          // }
         })
-        .catch((error) => { });
+        .catch((error) => { 
+          console.error("Error fetching address:", error);
+        });
     }
-  };
-  const optionsCitys: any =
+  }, [session]);
+  const optionsCitys: any = useMemo(() =>
     query != ""
       ? [
         { label: query },
@@ -977,9 +1058,9 @@ function Bookings() {
       ]
       : formdata.pickup != ""
         ? [{ label: formdata.pickup }]
-        : [];
+        : [], [query, addresses, formdata.pickup]);
 
-  const optionsCitys2: any =
+  const optionsCitys2: any = useMemo(() =>
     query1 != ""
       ? [
         { label: query1 },
@@ -990,14 +1071,14 @@ function Bookings() {
       ]
       : formdata.destination != ""
         ? [{ label: formdata.destination }]
-        : [];
+        : [], [query1, addresses1, formdata.destination]);
 
-  const bookingTypeOptions = [
+  const bookingTypeOptions = useMemo(() => [
     { label: "Local", value: "local" },
     { label: "Web", value: "web" },
     { label: "On Call", value: "call" },
-  ];
-  const handleSubmit = (e) => {
+  ], []);
+  const handleSubmit = useCallback((e) => {
     e.preventDefault();
 
     if (formdata.date == "") {
@@ -1043,8 +1124,9 @@ function Bookings() {
         }
       });
     } else {
+      const { _id, id, ...formDataWithoutId } = formdata;
       const payload = {
-        ...formdata,
+        ...formDataWithoutId,
         selectedDays,
         startingAt: startDate,
         endingAt: endDate,
@@ -1082,23 +1164,23 @@ function Bookings() {
         }
       });
     }
-  };
+  }, [formdata, isEdit, session?.accessToken, pickupPoint, destinationPoint, routeCoords, bookings, selectedDays, startDate, endDate, numWeeks, category, getBookings, defaultFormData]);
 
-  const handleMultiBooking = async () => {
+  const handleMultiBooking = useCallback(async () => {
     setAllowMultiBook((prev) => !prev);
     if (allowMultiBook == false) {
       setFormData((prev) => ({ ...prev, multiBooking: true }));
     } else {
       setFormData((prev) => ({ ...prev, multiBooking: false }));
     }
-  }
+  }, [allowMultiBook]);
 
   const [filterValue, setFilterValue] = useState("");
 
-  const filterValueChange = (e) => {
+  const filterValueChange = useCallback((e) => {
     const filterValue = e.target?.value.toLowerCase();
     setFilterValue(filterValue);
-  };
+  }, []);
 
   useEffect(() => {
     setbookings(
@@ -1121,6 +1203,8 @@ function Bookings() {
         }
       })
     );
+    // Clear selected bookings when search filter changes
+    setSelectedBookingIds([]);
   }, [filterValue]);
 
   const SetViewfly = ({ coords, zoom }: { coords: any; zoom: number }) => {
@@ -1131,39 +1215,61 @@ function Bookings() {
     return null;
   };
 
+  // Memoize handler for dispatching selected bookings
+  const handleDispatchSelected = useCallback(async () => {
+    if (selectedBookingIds.length === 0) {
+      toast.error("Please select at least one booking");
+      return;
+    }
+
+    try {
+      // Update all selected bookings to "pendingAccept" status
+      const updatePromises = selectedBookingIds.map((bookingId) => {
+        const booking = bookings.find((b) => b._id === bookingId);
+        return updateBooking({
+          token: session?.accessToken,
+          payload: {
+            id: bookingId,
+            status: "pendingAccept",
+          },
+        });
+      });
+
+      const results = await Promise.all(updatePromises);
+      
+      // Check if all updates were successful
+      const allSuccessful = results.every((resp) => resp?.success);
+      
+      if (allSuccessful) {
+        toast.success(`${selectedBookingIds.length} booking(s) dispatched successfully`);
+        setSelectedBookingIds([]);
+        getBookings();
+      } else {
+        toast.error("Some bookings failed to update");
+        getBookings();
+      }
+    } catch (error) {
+      toast.error("Error dispatching bookings");
+      console.error(error);
+    }
+  }, [selectedBookingIds, bookings, session?.accessToken, getBookings]);
+
+  
 
 
 
-  const daysOptions = [
-    { value: "monday", label: "Monday" },
-    { value: "tuesday", label: "Tuesday" },
-    { value: "wednesday", label: "Wednesday" },
-    { value: "thursday", label: "Thursday" },
-    { value: "friday", label: "Friday" },
-    { value: "saturday", label: "Saturday" },
-    { value: "sunday", label: "Sunday" },
-  ];
-
-  const [selectedDays, setSelectedDays] = useState([]);
-  const [availableDays, setAvailableDays] = useState(daysOptions);
-  const [numWeeks, setNumWeeks] = useState(1);
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(addWeeks(new Date(), 1));
-  const [manualEndDate, setManualEndDate] = useState(false);
-
-
-  // Handle selecting a day
-  const handleDaySelect = (option) => {
+  // Memoize handle selecting a day
+  const handleDaySelect = useCallback((option) => {
     if (!option) return;
     setSelectedDays((prev) => [...prev, option]);
     setAvailableDays((prev) => prev.filter((day) => day.value !== option.value));
-  };
+  }, []);
 
-  // Handle deselecting a day
-  const removeDay = (day) => {
+  // Memoize handle deselecting a day
+  const removeDay = useCallback((day) => {
     setSelectedDays((prev) => prev.filter((d) => d.value !== day.value));
     setAvailableDays((prev) => [...prev, day].sort((a, b) => daysOptions.findIndex(d => d.value === a.value) - daysOptions.findIndex(d => d.value === b.value)));
-  };
+  }, [daysOptions]);
 
   // Auto update end date if not manually changed
   useEffect(() => {
@@ -1186,11 +1292,11 @@ function Bookings() {
 
 
   return (
-    <div className="flex flex-col">
-      <p className="bg-green px-4 py-1 border-t  text-center text-2xl text-white font-bold journey_heading">
+    <div className="flex flex-col min-h-screen">
+      <p className="bg-green px-2 sm:px-4 py-2 sm:py-1 border-t text-center text-lg sm:text-xl md:text-2xl text-white font-bold">
         Manage Bookings
       </p>
-      <div className="grid xl:grid-cols-12 lg:grid-cols-12 md:grid-cols-12  sm:grid-cols-12 bg-white ">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-2 sm:gap-4 bg-white">
         <div className="xl:col-span-4 lg:col-span-4 md:col-span-4   sm:col-span-4 p-4">
           <div className="relative w-full bg-white overflow-x-auto max-h-[250px] min-h-[250px] p-4 border rounded-md border-black">
             <div className="text-lg flex   justify-center font-medium">
@@ -1332,12 +1438,12 @@ function Bookings() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-4 px-4">
-        <div className="md:col-span-12 border rounded-md p-4 bg-white">
+      <div className="grid grid-cols-1 px-2 sm:px-4">
+        <div className="border rounded-md p-2 sm:p-4 bg-white">
           {/* Top Bar - Search, Stats, Button */}
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-4 mb-4 items-center">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-2 sm:gap-4 mb-4 items-center">
             {/* Search Input */}
-            <div className="md:col-span-4 col-span-12">
+            <div className="lg:col-span-4 sm:col-span-2">
               <input
                 onChange={filterValueChange}
                 type="text"
@@ -1352,15 +1458,27 @@ function Bookings() {
             </div>
 
             {/* Booking Count */}
-            <div className="md:col-span-4 col-span-12 text-md text-gray-700 font-medium text-center md:text-left">
+            <div className="lg:col-span-4 sm:col-span-2 text-sm sm:text-md text-gray-700 font-medium ">
               <span>Bookings: </span>
               <span className="text-lg font-semibold text-gray-900">
                 {bookings.length}
               </span>
             </div>
 
-            {/* Add Booking Button */}
-            <div className="md:col-span-4 col-span-12 flex justify-center md:justify-end">
+            {/* Add Booking & Dispatch Selected Buttons */}
+            <div className="lg:col-span-4 sm:col-span-2 flex flex-col sm:flex-row justify-center lg:justify-end gap-2">
+              <button
+                onClick={handleDispatchSelected}
+                disabled={selectedBookingIds.length === 0}
+                className={`px-4 py-2 text-sm font-medium rounded-md text-white transition-all flex items-center gap-2 ${
+                  selectedBookingIds.length === 0
+                    ? "bg-gray-400 cursor-not-allowed opacity-60"
+                    : "bg-[#00B56C] hover:bg-[#028B4A]"
+                }`}
+              >
+                <CarOutlined style={{ fontSize: "18px" }} />
+                Dispatch ({selectedBookingIds.length})
+              </button>
               <button
                 onClick={() => {
                   if (!vehicleList || vehicleList?.length === 0) {
@@ -2376,7 +2494,7 @@ function Bookings() {
                       payload: {
                         id: bookingUpdate._id,
                         driverId: null,
-                        status: "Pending",
+                        status: "pending",
                       },
                     }).then((resp) => {
                       setCancelModal(false);
@@ -2401,4 +2519,5 @@ function Bookings() {
     </div>
   );
 }
-export default Bookings;
+// Export memoized component for better performance
+export default memo(Bookings);

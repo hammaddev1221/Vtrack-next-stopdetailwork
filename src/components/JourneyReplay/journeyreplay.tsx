@@ -21,13 +21,8 @@ import markerB from "../../../public/Images/marker-b.png";
 import harshAcceleration from "../../../public/Images/brake-discs.png";
 import FocusIconNew from "../../../public/car-icon-vtrack.png";
 import { useSelector } from "react-redux";
-import Speedometer, {
-  Background,
-  Arc,
-  Needle,
-  Progress,
-  Marks,
-} from "react-speedometer";
+import CustomSpeedometer from "./CustomSpeedometer";
+import JourneyInfo from "./JourneyInfo";
 import {
   TravelHistoryByBucketV2,
   TripsByBucketAndVehicle,
@@ -365,47 +360,58 @@ export default function JourneyReplayComp() {
       setCarPosition(new L.LatLng(polylinedata[0][0], polylinedata[0][1]));
     }
   }, [polylinedata]);
-  // const [zoneList, setZoneList] = useState<zonelistType[]>([]);
-  // const [showZones, setShowZones] = useState(false);
+  const [zoneList, setZoneList] = useState<zonelistType[]>([]);
+  const [showZones, setShowZones] = useState(false);
 
-  // const allZones = useSelector((state: any) => state.zone);
+  const allZones = useSelector((state: any) => state.zone);
 
-  // useEffect(() => {
-  //   setZoneList(allZones?.zone);
-  // }, [allZones]);
-  // const handleShowZone = () => {
-  //   setShowZones(!showZones);
-  // };
+  useEffect(() => {
+    setZoneList(allZones?.zone);
+  }, [allZones]);
+  const handleShowZone = () => {
+    setShowZones(!showZones);
+  };
   useEffect(() => {
     const vehicleListData = async () => {
       try {
         if (session) {
           if (session?.userRole == "Admin" || session?.userRole == "SuperAdmin") {
 
-            if (allData?.vehicle.data?.length == 0) {
-              const Data = await vehicleListByClientId({
-                token: session?.accessToken,
-                clientId: session?.clientId,
-              });
-              setVehicleList(Data.data);
-            } else {
-              setVehicleList(allData?.vehicle.data);
-            }
+            // if (allData?.vehicle.data?.length == 0) {
+            //   const Data = await vehicleListByClientId({
+            //     token: session?.accessToken,
+            //     clientId: session?.clientId,
+            //   });
+            //   setVehicleList(Data.data);
+            // } else {
+            //   setVehicleList(allData?.vehicle.data);
+            // }
+            const Data = await vehicleListByClientId({
+              token: session?.accessToken,
+              clientId: session?.clientId,
+            });
+            setVehicleList(Data.data);
+
 
           } else {
 
-            if (allData?.vehicle?.data?.length == 0) {
-              const data = await getAllVehicleByUserId({
-                token: session?.accessToken,
-                userId: session?.userId,
-              });
-              setVehicleList(data);
-            } else {
-              setVehicleList(allData?.vehicle.data.filter((i: any) => {
-                return i.userId.includes(session?.userId)
-              }));
-            }
 
+            // if (allData?.vehicle?.data?.length == 0) {
+            //   const data = await getAllVehicleByUserId({
+            //     token: session?.accessToken,
+            //     userId: session?.userId,
+            //   });
+            //   setVehicleList(data);
+            // } else {
+            //   setVehicleList(allData?.vehicle.data.filter((i: any) => {
+            //     return i.userId.includes(session?.userId)
+            //   }));
+            // }
+            const data = await getAllVehicleByUserId({
+              token: session?.accessToken,
+              userId: session?.userId,
+            });
+            setVehicleList(data);
 
           }
         }
@@ -449,6 +455,50 @@ export default function JourneyReplayComp() {
 
     })();
   }, []);
+
+
+  useEffect(() => {
+
+
+    vehicleListData();
+
+
+  }, []);
+  const vehicleListData = async () => {
+    try {
+      if (session) {
+        if (session?.userRole == "Admin" || session?.userRole == "SuperAdmin") {
+
+          if (allData?.vehicle.data?.length == 0) {
+            const Data = await vehicleListByClientId({
+              token: session?.accessToken,
+              clientId: session?.clientId,
+            });
+            setVehicleList(Data.data);
+          } else {
+            setVehicleList(allData?.vehicle.data);
+          }
+
+        } else {
+
+
+          if (allData?.vehicle?.data?.length == 0) {
+            const data = await getAllVehicleByUserId({
+              token: session?.accessToken,
+              userId: session?.userId,
+            });
+            setVehicleList(data);
+          } else {
+            setVehicleList(allData?.vehicle.data.filter((i: any) => {
+              return i.userId.includes(session?.userId)
+            }));
+          }
+
+
+        }
+      }
+    } catch (error) { }
+  };
   useEffect(() => {
 
     const clientMinZoomSettings = session?.clientSetting?.filter(
@@ -463,7 +513,7 @@ export default function JourneyReplayComp() {
     )[0]?.PropertyValue;
     const maxzoomLevel = clientMaxZoomSettings ? parseInt(clientMaxZoomSettings) : 18;
     setmaxzoom(maxzoomLevel);
-  }, [clientsetting])
+  }, [clientsetting, zoneList])
 
   // useEffect(() => {
   //   const clientZoomSettings = clientsetting?.filter(
@@ -585,8 +635,7 @@ export default function JourneyReplayComp() {
               const response = await toast.promise(
                 TripsByBucketAndVehicle({
                   token: session?.accessToken,
-                  payload: newdata,
-                  version: (session.V2==undefined || session.V2==true)? "v2" : "v3"
+                  payload: newdata, version: session.V2 ? "v2" : "v3"
                 }),
 
                 {
@@ -710,7 +759,7 @@ export default function JourneyReplayComp() {
           TravelHistoryByBucketV2({
             token: session?.accessToken,
             payload: newresponsedata,
-            version: (session.V2==undefined || session.V2==true)? "v2" : "v3"
+            version: session.V2 ? "v2" : "v3"
           }),
           {
             loading: "Loading...",
@@ -784,73 +833,138 @@ export default function JourneyReplayComp() {
             }
           });
 
-        let stopTimesArray: any = [];
+        // let stopTimesArray: any = [];
+        // for (let i = 0; i < TravelHistoryresponseapi?.data?.length; i++) {
+        //   var currentData = TravelHistoryresponseapi?.data[i];
 
 
-        for (let i = 0; i < TravelHistoryresponseapi?.data?.length; i++) {
-          var currentData = TravelHistoryresponseapi?.data[i];
+        //   if (
+        //     currentData.ignition === 1 &&
+        //     currentData.trip === 1 &&
+        //     (currentData.speed === "0 Mph" || currentData.speed === "0 Kph")
+        //   ) {
+        //     let timeDiffInSeconds = 0;
+        //     let nextIndex = i + 1;
 
 
-          if (
-            currentData.ignition === 1 &&
-            currentData.trip === 1 &&
-            (currentData.speed === "0 Mph" || currentData.speed === "0 Kph")
-          ) {
-            let timeDiffInSeconds = 0;
-            let nextIndex = i + 1;
+        //     while (
+        //       nextIndex < TravelHistoryresponseapi?.data?.length &&
+        //       (TravelHistoryresponseapi?.data[nextIndex]?.speed === "0 Mph" ||
+        //         TravelHistoryresponseapi?.data[nextIndex]?.speed === "0 Kph")
+
+        //     ) {
+
+        //       const currentTime: any = new Date(currentData.date);
+
+        //       const nextTime: any = new Date(
+        //         TravelHistoryresponseapi?.data[nextIndex].date
+        //       );
+
+        //       timeDiffInSeconds += Math.floor((nextTime - currentTime) / 1000);
+        //       nextIndex = TravelHistoryresponseapi?.data[nextIndex];
+        //       nextIndex++;
+        //     }
+
+        //     if (timeDiffInSeconds != 0) {
+        //       i = nextIndex - 1;
+        //     }
+        //     if (
+        //       timeDiffInSeconds == 0 &&
+        //       (TravelHistoryresponseapi?.data[nextIndex]?.speed !== "0 Mph" ||
+        //         TravelHistoryresponseapi?.data[nextIndex]?.speed !== "0 Kph") &&
+        //       nextIndex < TravelHistoryresponseapi?.data?.length
+        //     ) {
+        //       const currentTime: any = new Date(currentData.date);
+        //       const nextTime: any = new Date(
+        //         TravelHistoryresponseapi?.data[nextIndex].date
+        //       );
+        //       timeDiffInSeconds += Math.floor((nextTime - currentTime) / 1000);
+        //     }
+
+        //     const minutes = Math.floor(timeDiffInSeconds / 60);
+        //     const seconds = timeDiffInSeconds % 60;
 
 
-            while (
-              nextIndex < TravelHistoryresponseapi?.data?.length &&
-              (TravelHistoryresponseapi?.data[nextIndex]?.speed === "0 Mph" ||
-                TravelHistoryresponseapi?.data[nextIndex]?.speed === "0 Kph")
+        //     const formattedTime = ` ${minutes > 0 ? minutes + "m" : ""
+        //       } ${seconds}s`;
 
-            ) {
+        //     // Display the time difference
+        //     stopTimesArray.push({
+        //       date: currentData.date,
+        //       time: formattedTime,
+        //       address: currentData.address,
+        //       lat: currentData.lat,
+        //       lng: currentData.lng,
+        //     });
+        //   }
+        // }
+        const stopTimesArray: any[] = [];
+        const data = TravelHistoryresponseapi?.data || [];
+        let cond = false
+        for (let i = 0; i < data.length; i++) {
+          const current = data[i];
 
-              const currentTime: any = new Date(currentData.date);
+          // Start tracking if speed is 0 and ignition is ON
+          const isStartOfStop = (current.ignition === 1) && (current.speed === "0 Kph" || current.speed === "0 Mph");
 
-              const nextTime: any = new Date(
-                TravelHistoryresponseapi?.data[nextIndex].date
-              );
+          if (isStartOfStop && !cond) {
+            cond = true;
+            const startTime = new Date(current.timeStamp);
+            let endTime = null;
+            let j = i + 1;
 
-              timeDiffInSeconds += Math.floor((nextTime - currentTime) / 1000);
-              nextIndex = TravelHistoryresponseapi?.data[nextIndex];
-              nextIndex++;
+            while (j < data.length) {
+              const next = data[j];
+
+              const isStopped = next.speed === "0 Kph" || next.speed === "0 Mph";
+              const isIgnitionOff = next.ignition === 0;
+              const isMoving = !(isStopped || isIgnitionOff); // Means speed > 0 and ignition ON
+
+              if (isMoving) {
+                // Vehicle started moving
+                endTime = new Date(next.timeStamp);
+                break;
+              } else if (isIgnitionOff) {
+                // Vehicle turned off, treat that as stop end too
+                endTime = new Date(next.timeStamp);
+                break;
+              }
+
+              j++;
             }
 
-            if (timeDiffInSeconds != 0) {
-              i = nextIndex - 1;
-            }
-            if (
-              timeDiffInSeconds == 0 &&
-              (TravelHistoryresponseapi?.data[nextIndex]?.speed !== "0 Mph" ||
-                TravelHistoryresponseapi?.data[nextIndex]?.speed !== "0 Kph") &&
-              nextIndex < TravelHistoryresponseapi?.data?.length
-            ) {
-              const currentTime: any = new Date(currentData.date);
-              const nextTime: any = new Date(
-                TravelHistoryresponseapi?.data[nextIndex].date
-              );
-              timeDiffInSeconds += Math.floor((nextTime - currentTime) / 1000);
+            // If we reached end and no movement or ignition off, use last timestamp
+            if (!endTime && j >= data.length && data.length > 0) {
+              endTime = new Date(data[data.length - 1].timeStamp);
             }
 
-            const minutes = Math.floor(timeDiffInSeconds / 60);
-            const seconds = timeDiffInSeconds % 60;
+            // Calculate duration
+            if (endTime) {
+              const diffInSeconds = Math.floor((endTime.getTime() - startTime.getTime()) / 1000);
+              if (diffInSeconds > 0) {
+                const minutes = Math.floor(diffInSeconds / 60);
+                const seconds = diffInSeconds % 60;
 
+                const formattedTime = `${minutes > 0 ? minutes + "m " : ""}${seconds}s`;
 
-            const formattedTime = ` ${minutes > 0 ? minutes + "m" : ""
-              } ${seconds}s`;
+                stopTimesArray.push({
+                  date: current.timeStamp,
+                  time: formattedTime,
+                  address: current.address?.display_name || "",
+                  lat: current.lat,
+                  lng: current.lng,
+                  duration: diffInSeconds,
+                });
+              }
 
-            // Display the time difference
-            stopTimesArray.push({
-              date: currentData.date,
-              time: formattedTime,
-              address: currentData.address,
-              lat: currentData.lat,
-              lng: currentData.lng,
-            });
+              // Skip processed records
+              i = j - 1;
+              cond = false; // Reset for next possible stop period
+            }
           }
         }
+
+        console.log("stopTimesArray", stopTimesArray);
         setStopWithSecond(stopTimesArray);
         setTravelHistoryresponse(TravelHistoryresponseapi.data);
 
@@ -1862,7 +1976,7 @@ export default function JourneyReplayComp() {
 
                     {loadingMap && polylinedata.length > 0 ? (
                       <>
-                        {/* <Polyline
+                        <Polyline
                           pathOptions={{ color: "red", weight: 6 }}
                           positions={polylinedata}
                           eventHandlers={{
@@ -1873,8 +1987,8 @@ export default function JourneyReplayComp() {
                             },
                           }}
 
-                        /> */}
-                        <DirectionalPolyline
+                        />
+                        {/* <DirectionalPolyline
                           polylinedata={polylinedata}
                           isPlaying={isPlaying}
                           clickPosition={clickPosition}
@@ -1897,7 +2011,7 @@ export default function JourneyReplayComp() {
                               }
                             }
                           }
-                        />
+                        /> */}
                       </>
                     ) : null}
                     {clickPosition && (
@@ -2132,7 +2246,7 @@ export default function JourneyReplayComp() {
                                 className={`cursor-pointer ${isActive ? 'bg-[#e1f0e3]' : ''}`}
                               >
                                 <p className="text-black font-popins px-2 py-2 text-sm">
-                                  <b>{item?.address?.display_name}</b>
+                                  <b>{item?.address}</b>
                                 </p>
                                 <div className="grid grid-cols-12">
                                   <div className="lg:col-span-1 md:col-span-2 sm:col-span-6 col-span-2"></div>
@@ -2184,51 +2298,31 @@ export default function JourneyReplayComp() {
             )}
 
             <div className="grid lg:grid-cols-10 grid-cols-10" id="speed_meter">
-              <div className="col-span-2  lg:w-52 md:w-44 sm:w-44 w-48 rounded-md ">
-                {isPlaying || isPaused ? (
-                  <div>
-
-                    <Speedometer
+              {isPlaying || isPaused ? (
+                <div className="col-span-2 lg:w-64 md:w-60 sm:w-52 w-64">
+                  <div className="flex flex-col gap-4">
+                    {/* Speedometer Box */}
+                    <CustomSpeedometer
                       value={
-                        getSpeedAndDistance()?.speed?.includes("Mph")
-                          ? getSpeedAndDistance()?.speed?.replace("Mph", "")
-                          : getSpeedAndDistance()?.speed?.replace("Kph", "")
+                        parseFloat(
+                          getSpeedAndDistance()?.speed?.includes("Mph")
+                            ? getSpeedAndDistance()?.speed?.replace("Mph", "")
+                            : getSpeedAndDistance()?.speed?.replace("Kph", "")
+                        ) || 0
                       }
                       max={140}
-                      angle={160}
-                      fontFamily="squada-one"
-                      accentColor="#00B56C"
-                      width={200}
+                      unit={getSpeedAndDistance()?.speed?.includes("Mph") ? "mph" : "km/h"}
+                    />
 
-                    >
-                      <Background angle={180} />
-                      <Arc />
-                      <Needle />
-                      <Progress />
-                      <Marks />
-                    </Speedometer>
-                    <p className="text-white text-sm px-2 py-1 -mt-16 w-full bg-bgPlatBtn rounded-md">
-                      Distance: {getSpeedAndDistance()?.distanceCovered}
-                    </p>
-                    <p
-                      className="bg-bgPlatBtn text-white mt-3 w-full px-2 py-3 rounded-md
-                  trip_address
-                  "
-                    >
-                      Address: {addressTravelHistory?.slice(0, 3).map((item, index) => (
-                        <div key={index}>{<p>{item}</p>}</div>
-                      ))}
-                    </p>
-                    <p
-                      className="bg-bgPlatBtn text-white mt-3 w-full px-2 py-3 rounded-md
-                  trip_address
-                  "
-                    >
-                      Time: {getSpeedAndDistance()?.date}
-                    </p>
+                    {/* Journey Info Box Below */}
+                    <JourneyInfo
+                      distance={getSpeedAndDistance()?.distanceCovered}
+                      address={addressTravelHistory}
+                      time={getSpeedAndDistance()?.date}
+                    />
                   </div>
-                ) : null}
-              </div>
+                </div>
+              ) : null}
             </div>
 
             {hideicondiv && hidediv && (

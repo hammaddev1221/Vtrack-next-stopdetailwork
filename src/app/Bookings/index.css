@@ -1,3 +1,40 @@
+/* Responsive improvements for Bookings page */
+@media (max-width: 768px) {
+  .custom-table .ant-table {
+    font-size: 12px;
+  }
+  
+  .custom-table .ant-table-thead > tr > th,
+  .custom-table .ant-table-tbody > tr > td {
+    padding: 8px 4px !important;
+  }
+  
+  /* Make modal responsive on mobile */
+  .modal-overlay .bg-white {
+    max-width: 95% !important;
+    margin: 1rem auto;
+    max-height: 95vh;
+    overflow-y: auto;
+  }
+}
+
+@media (max-width: 640px) {
+  .custom-table {
+    overflow-x: auto;
+  }
+  
+  .custom-table .ant-table-cell {
+    min-width: 80px;
+  }
+  
+  /* Stack form fields vertically on small screens */
+  .grid.grid-cols-1.md\\:grid-cols-4 > div,
+  .grid.grid-cols-1.md\\:grid-cols-3 > div,
+  .grid.grid-cols-1.md\\:grid-cols-2 > div {
+    grid-column: span 1 !important;
+  }
+}
+
 /* Active page background */
 .ant-pagination .ant-pagination-item-active {
    color: #00B56C;

@@ -612,14 +612,19 @@ export default function RootLayout({
                         version="1.0"
                         xmlns="http://www.w3.org/2000/svg"
                         className={`w-20 h-14 py-3 text-white text-white-10 dark:text-white ${
-                          pathname === "/Bookings"
+                          pathname === "/Bookings" ||
+                           pathname ==  "/Schedule"
                             ? "border-r-2 border-#29303b"
                             : "border-y-2"
                         }`}
+                        
+                          
                         style={{
-                          color: pathname == "/Bookings" ? "green" : "white",
+                          color: pathname == "/Bookings" ||
+                          pathname ==  "/Schedule" ? "green" : "white",
                           backgroundColor:
-                            pathname == "/Bookings" ? "white" : "",
+                            pathname == "/Bookings" ||
+                             pathname ==   "/Schedule" ? "white" : "",
                         }}
                         //  stroke="currentColor"
                         width="512.000000pt"
@@ -630,9 +635,11 @@ export default function RootLayout({
                         <g
                           transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)"
                           style={{
-                            fill: pathname == "/Bookings" ? "green" : "white",
+                            fill: pathname == "/Bookings" ||
+                            pathname == "/Schedule" ? "green" : "white",
                             backgroundColor:
-                              pathname == "/Bookings" ? "white" : "",
+                              pathname == "/Bookings" || 
+                              pathname =="/Schedule" ? "white" : "",
                           }}
                         >
                           <path

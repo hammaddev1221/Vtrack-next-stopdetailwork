@@ -3,7 +3,7 @@
 import { getBooking, GetDriverDataByClientId, updateBooking } from "@/utils/API_CALLS";
 import moment from "moment";
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo, useCallback, memo } from "react";
 import { Table, Button, Tooltip, Image, Tag, Input, Pagination  } from 'antd';
 import Select from "react-select";
 import { SearchOutlined } from "@ant-design/icons";
@@ -45,7 +45,7 @@ const Modal: React.FC<ModalProps> = ({ title, color, onClose, children, footer, 
   </div>
 );
 
-export default function Dispatch() {
+function Dispatch() {
   const { data: session } = useSession();
   const [bookings, setBookings] = useState<any[]>([]);
   const [rawBookings, setRawBookings] = useState<any[]>([]);
@@ -56,22 +56,50 @@ export default function Dispatch() {
   const [driverOptions, setDriverOptions] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [searchText, setSearchText] = useState('');
-  const pageSize = 4;
   const [currentPage, setCurrentPage] = useState(1);
+  
+  const pageSize = 4;
 
-  const paginatedData = selectedBookings.slice(
-    (currentPage - 1) * pageSize,
-    currentPage * pageSize
-  );
+  // Memoize paginated data
+  const paginatedData = useMemo(() => {
+    return selectedBookings.slice(
+      (currentPage - 1) * pageSize,
+      currentPage * pageSize
+    );
+  }, [selectedBookings, currentPage, pageSize]);
 
-  useEffect(() => {
-    getBookings();
-  }, []);
+  // Memoize getBookings function
+  const getBookings = useCallback(() => {
+    if (!session?.accessToken || !session?.clientId || !session?.timezone) return;
+    
+    const today = moment()
+      .tz(session.timezone)
+      .clone()
+      .startOf("day")
+      .format("YYYY-MM-DD");
+    
+    getBooking({
+      token: session.accessToken,
+      query: { clientId: session.clientId },
+    }).then((resp: any) => {
+      if (resp?.success) {
+        setRawBookings(resp.data);
+        const pendingBookings = resp.data.filter((i: any) => {
+          return i.status.toString() === "pending" && i.driverId == null && i.driverId == undefined;
+        });
+        setBookings(pendingBookings);
+        setFilteredBookings(pendingBookings);
+      }
+    });
+  }, [session?.accessToken, session?.clientId, session?.timezone]);
 
-  const getdriverData = async () => {
+  // Memoize getdriverData function
+  const getdriverData = useCallback(async () => {
+    if (!session?.accessToken || !session?.clientId) return;
+    
     const response = await GetDriverDataByClientId({
-      token: session?.accessToken,
-      clientId: session?.clientId,
+      token: session.accessToken,
+      clientId: session.clientId,
     });
     let drivers = response
       .filter((item: any) => item.isDeleted === false)
@@ -85,36 +113,18 @@ export default function Dispatch() {
         value: i._id,
       }))
     );
-  };
+  }, [session?.accessToken, session?.clientId]);
+
+  useEffect(() => {
+    getBookings();
+  }, [getBookings]);
 
   useEffect(() => {
     getdriverData();
-  }, []);
+  }, [getdriverData]);
 
-  function getBookings() {
-    const today = moment()
-      .tz(session?.timezone)
-      .clone()
-      .startOf("day")
-      .format("YYYY-MM-DD");
-    
-    getBooking({
-      token: session?.accessToken,
-      query: { clientId: session?.clientId },
-    }).then((resp: any) => {
-      if (resp?.success) {
-        setRawBookings(resp.data);
-        const pendingBookings = resp.data.filter((i: any) => {
-          return i.status.toString() === "Pending" && i.driverId == null && i.driverId == undefined;
-        });
-        setBookings(pendingBookings);
-        setFilteredBookings(pendingBookings);
-      }
-    });
-  }
-
-  // Search functionality
-  const handleSearch = (value: string) => {
+  // Memoize search handler
+  const handleSearch = useCallback((value: string) => {
     setSearchText(value);
     
     if (!value.trim()) {
@@ -138,21 +148,16 @@ export default function Dispatch() {
     );
     
     setFilteredBookings(filtered);
-  };
+  }, [bookings]);
 
-  // Clear search
-  const handleClearSearch = () => {
-    setSearchText('');
-    setFilteredBookings(bookings);
-  };
-
-  // Handle row selection
-  const onSelectChange = (newSelectedRowKeys: any[], selectedRows: any[]) => {
+  // Memoize row selection handler
+  const onSelectChange = useCallback((newSelectedRowKeys: any[], selectedRows: any[]) => {
     setSelectedRowKeys(newSelectedRowKeys);
     setSelectedBookings(selectedRows);
-  };
+  }, []);
 
-  const rowSelection = {
+  // Memoize row selection config
+  const rowSelection = useMemo(() => ({
     selectedRowKeys,
     onChange: onSelectChange,
     onSelectAll: (selected: boolean, selectedRows: any[], changeRows: any[]) => {
@@ -164,10 +169,11 @@ export default function Dispatch() {
         setSelectedBookings([]);
       }
     },
-  };
+  }), [selectedRowKeys, onSelectChange]);
 
-  const handleAllocated = async () => {
-    if (!selectedDriver || selectedBookings.length === 0) {
+  // Memoize handleAllocated
+  const handleAllocated = useCallback(async () => {
+    if (!selectedDriver || selectedBookings.length === 0 || !session?.accessToken) {
       return;
     }
 
@@ -177,7 +183,7 @@ export default function Dispatch() {
     try {
       const updatePromises = selectedBookings.map((booking) => 
         updateBooking({
-          token: session?.accessToken,
+          token: session.accessToken,
           payload: { 
             id: booking._id, 
             driverId: selectedDriver.value,
@@ -197,10 +203,11 @@ export default function Dispatch() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [selectedDriver, selectedBookings, session?.accessToken, getBookings]);
 
-  const handleDispatch = async () => {
-    if (!selectedDriver || selectedBookings.length === 0) {
+  // Memoize handleDispatch
+  const handleDispatch = useCallback(async () => {
+    if (!selectedDriver || selectedBookings.length === 0 || !session?.accessToken) {
       return;
     }
 
@@ -210,7 +217,7 @@ export default function Dispatch() {
     try {
       const updatePromises = selectedBookings.map((booking) => 
         updateBooking({
-          token: session?.accessToken,
+          token: session.accessToken,
           payload: { 
             id: booking._id, 
             driverId: selectedDriver.value,
@@ -230,18 +237,18 @@ export default function Dispatch() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [selectedDriver, selectedBookings, session?.accessToken, getBookings]);
 
-  // Responsive columns configuration
-  const columns = [
+  // Memoize columns configuration to prevent re-creation on every render
+  const columns = useMemo(() => [
     {
       title: "Pickup",
       dataIndex: "pickup",
       key: "pickup",
       width: 120,
       ellipsis: true,
-      responsive: ['md'],
-      render: (text) => (
+      responsive: ['md'] as any,
+      render: (text: string) => (
         <Tooltip placement="topLeft" title={text}>
           <span className="text-sm">{text}</span>
         </Tooltip>
@@ -253,8 +260,8 @@ export default function Dispatch() {
       key: "destination",
       width: 120,
       ellipsis: true,
-      responsive: ['md'],
-      render: (text) => (
+      responsive: ['md'] as any,
+      render: (text: string) => (
         <Tooltip placement="topLeft" title={text}>
           <span className="text-sm">{text}</span>
         </Tooltip>
@@ -266,8 +273,8 @@ export default function Dispatch() {
       key: "vehicleReg",
       width: 80,
       ellipsis: true,
-      responsive: ['sm'],
-      render: (text) => (
+      responsive: ['sm'] as any,
+      render: (text: string) => (
         <Tooltip placement="topLeft" title={text}>
           <span className="text-sm">{text}</span>
         </Tooltip>
@@ -279,8 +286,8 @@ export default function Dispatch() {
       key: "driver",
       width: 80,
       ellipsis: true,
-      responsive: ['sm'],
-      render: (text) => (
+      responsive: ['sm'] as any,
+      render: (text: string) => (
         <Tooltip placement="topLeft" title={text}>
           <span className="text-sm">{text}</span>
         </Tooltip>
@@ -292,7 +299,7 @@ export default function Dispatch() {
       key: "name",
       width: 80,
       ellipsis: true,
-      render: (text) => (
+      render: (text: string) => (
         <Tooltip placement="topLeft" title={text}>
           <span className="text-sm">{text}</span>
         </Tooltip>
@@ -304,8 +311,8 @@ export default function Dispatch() {
       key: "contact",
       width: 100,
       ellipsis: true,
-      responsive: ['lg'],
-      render: (text) => (
+      responsive: ['lg'] as any,
+      render: (text: string) => (
         <Tooltip placement="topLeft" title={text}>
           <span className="text-sm">{text}</span>
         </Tooltip>
@@ -317,8 +324,8 @@ export default function Dispatch() {
       key: "email",
       width: 120,
       ellipsis: true,
-      responsive: ['lg'],
-      render: (text) => (
+      responsive: ['lg'] as any,
+      render: (text: string) => (
         <Tooltip placement="topLeft" title={text}>
           <span className="text-sm">{text}</span>
         </Tooltip>
@@ -330,8 +337,8 @@ export default function Dispatch() {
       key: "description",
       width: 120,
       ellipsis: true,
-      responsive: ['xl'],
-      render: (text) => (
+      responsive: ['xl'] as any,
+      render: (text: string) => (
         <Tooltip placement="topLeft" title={text}>
           <span className="text-sm">{text}</span>
         </Tooltip>
@@ -342,8 +349,8 @@ export default function Dispatch() {
       dataIndex: "datetime",
       key: "datetime",
       width: 120,
-      responsive: ['md'],
-      render: (text) => <span className="text-sm">{text}</span>,
+      responsive: ['md'] as any,
+      render: (text: string) => <span className="text-sm">{text}</span>,
     },
     {
       title: "Status",
@@ -354,7 +361,7 @@ export default function Dispatch() {
         let color;
         switch (status) {
          
-          case "Pending":
+          case "pending":
             color = "processing";
             break;
           default:
@@ -385,22 +392,16 @@ export default function Dispatch() {
         return <Tag color={color} className="text-xs">{status.toUpperCase()}</Tag>;
       },
     },
-  ];
-
-  // const handleDispatch = () => {
-  //   setDispatchModal(true);
-  // };
-
-  
+  ], []);
 
   return (
-    <div className=" bg-gray-50 ">
-      <p className="bg-green px-4 py-1 border-t text-center text-2xl text-white font-bold journey_heading">
+    <div className=" bg-gray-50">
+      <p className="bg-green px-2 sm:px-4 py-2 sm:py-1 border-t text-center text-lg sm:text-xl md:text-2xl text-white font-bold">
         Dispatch Bookings
       </p>
 
       {/* Main Content */}
-      <div className="  px-1 md:px-5 md:py-5 max-w-full">
+      <div className="px-2 sm:px-4 md:px-5 py-2 sm:py-3 md:py-5 max-w-full">
         {/* Main Table with Search Bar in Border */}
         <div className="bg-white rounded-lg border border-black shadow-lg mb-5 overflow-hidden">
           {/* Search Bar Section - Inside the border */}
@@ -739,3 +740,6 @@ export default function Dispatch() {
     </div>
   );
 }
+
+// Export memoized component for better performance
+export default memo(Dispatch);
